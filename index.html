@@ -3,116 +3,91 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Document</title>
+    <title>Chat</title>
     <link rel="stylesheet" href="style.css">
+    <script src="chatController.js" defer></script>
 </head>
 <body>
-    <div class="chatWrapper">
-        <div class="chatHeader">
-            <div class="chatterInfo">
-                <img src="images/Image (1).png" alt="">
-                <p>AI AGENT</p>
-            </div>
-            <div class="buttons">
-                <button>
-                    <img src="images/image 1 (1).png" alt="">
-                </button>
-                <button>
-                    <img src="images/image 4.png" alt="">
-                </button>
-                <button>
-                    <img src="images/image 3.png" alt="">
-                </button>
-            </div>
-        </div>
-        <div class="chatHolder">
-            <div class="convoWrapper">
-                <div class="chat">
-                    <div class="userMessageHolder">
-                        <div class="messageHolder">
-                            <span class="message">dasdasdiudfgijugdifdasdasdiudfgijugdifugoiuiugoiui</span>
-                            <span class="timeStamp">16:53</span>
-                        </div>
-                        <img src="images/Image (1).png" alt="">
-                    </div>
-                    
-                    <div class="userMessageHolder otherUserMessageHolder">
-                        <img src="images/Image (1).png" alt="">
-                        <div class="messageHolder">
-                            <span class="message">ciganaaaaaaaaaaaaasfaaaafasfasfasfasfasfaaa</span>
-                            <span class="timeStamp">16:53</span>
-                        </div>                   
-                    </div>
-
-                    <div class="userMessageHolder">
-                        <div class="messageHolder">
-                            <span class="message">hdfhfh</span>
-                            <span class="timeStamp">16:53</span>
-                        </div>
-                        <img src="images/Image (1).png" alt="">
-                    </div>
-                    
-                    <div class="userMessageHolder otherUserMessageHolder">
-                        <img src="images/Image (1).png" alt="">
-                        <div class="messageHolder">
-                            <span class="message">asd</span>
-                            <span class="timeStamp">16:53</span>
-                        </div>                   
-                    </div>
-
-                    <div class="userMessageHolder">
-                        <div class="messageHolder">
-                            <span class="message">697679679</span>
-                            <span class="timeStamp">16:53</span>
-                        </div>
-                        <img src="images/Image (1).png" alt="">
-                    </div>
-                    
-                    <div class="userMessageHolder otherUserMessageHolder">
-                        <img src="images/Image (1).png" alt="">
-                        <div class="messageHolder">
-                            <span class="message">yyurquwyryuuy</span>
-                            <span class="timeStamp">16:53</span>
-                        </div>                   
-                    </div>
-
-                    <div class="userMessageHolder">
-                        <div class="messageHolder">
-                            <span class="message">oiioippioiupoi</span>
-                            <span class="timeStamp">16:53</span>
-                        </div>
-                        <img src="images/Image (1).png" alt="">
-                    </div>
-                    
-                    <div class="userMessageHolder otherUserMessageHolder">
-                        <img src="images/Image (1).png" alt="">
-                        <div class="messageHolder">
-                            <span class="message">125125125</span>
-                            <span class="timeStamp">16:53</span>
-                        </div>                   
-                    </div>
+    <div id="optiflowz-chat">
+        <button id="optiflowz-chat-open">
+            <svg viewBox="0 0 24 24"><path fill="currentColor" d="M12 3c5.5 0 10 3.58 10 8s-4.5 8-10 8c-1.24 0-2.43-.18-3.53-.5C5.55 21 2 21 2 21c2.33-2.33 2.7-3.9 2.75-4.5C3.05 15.07 2 13.13 2 11c0-4.42 4.5-8 10-8"></path></svg>
+            <svg viewBox="0 0 24 24"><path fill="currentColor" d="M7.41 8.58L12 13.17l4.59-4.59L18 10l-6 6l-6-6z"></path></svg>
+        </button>
+        <div class="optiflowz-chat-wrapper" style="display: none;">
+            <section class="optiflowz-chat-header">
+                <div>
+                    <img src="Image.png" alt="Default Agent Avatar">
+                    <h1>AI AGENT</h1>
                 </div>
-            </div>
-
-            <div class="chatActivity">
-
-            </div>
-
-            <div class="chatInputHolder">
-                <div class="userInput">
-                    <button id="attachmentBtn">
-                        <svg width="34" height="34" viewBox="0 0 34 34" fill="none" xmlns="http://www.w3.org/2000/svg">
-                            <path d="M16.8492 9.89946L16.8492 23.7989M23.7989 16.8492L9.89945 16.8492M27.2737 27.2737C33.031 21.5164 33.031 12.1819 27.2737 6.42456C21.5163 0.667238 12.1819 0.667238 6.42456 6.42456C0.667233 12.1819 0.667233 21.5164 6.42456 27.2737C12.1819 33.031 21.5163 33.031 27.2737 27.2737Z" stroke="#4680FD" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/>
+                <div>
+                    <button>
+                        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                            <path d="M20.9844 10H17M20.9844 10V6M20.9844 10L17.6569 6.34315C14.5327 3.21895 9.46734 3.21895 6.34315 6.34315C3.21895 9.46734 3.21895 14.5327 6.34315 17.6569C9.46734 20.781 14.5327 20.781 17.6569 17.6569C18.4407 16.873 19.0279 15.9669 19.4184 15" stroke="black" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
                         </svg>
                     </button>
-                    <textarea name="" id="" placeholder="Unesite poruku..."></textarea>
-                    <button id="sendBtn">
-                        <svg width="23" height="24" viewBox="0 0 23 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-                            <path fill-rule="evenodd" clip-rule="evenodd" d="M21.1221 1.96705C21.524 1.81632 21.9165 2.20883 21.7658 2.61077L14.424 22.1888C14.2586 22.63 13.6305 22.6183 13.4815 22.1713L10.5015 13.2313L1.56151 10.2513C1.1145 10.1023 1.10287 9.47424 1.54407 9.3088L21.1221 1.96705Z" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                    <button>
+                        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                            <path d="M6 7V18C6 19.1046 6.89543 20 8 20H16C17.1046 20 18 19.1046 18 18V7M6 7H5M6 7H8M18 7H19M18 7H16M10 11V16M14 11V16M8 7V5C8 3.89543 8.89543 3 10 3H14C15.1046 3 16 3.89543 16 5V7M8 7H16" stroke="black" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                        </svg>
+                    </button>
+                    <button>
+                        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                            <path d="M7.99997 20H17.1919C17.9865 20 18.7058 19.5296 19.0243 18.8016L21.8323 12.3833C21.9429 12.1305 22 11.8576 22 11.5816V11C22 9.89543 21.1045 9 20 9H13.5L14.7066 4.5757C14.8772 3.95023 14.5826 3.2913 14.0027 3.00136V3.00136C13.4204 2.7102 12.7134 2.87256 12.3164 3.3886L8.41472 8.46082C8.14579 8.81044 7.99997 9.23915 7.99997 9.68024V20ZM7.99997 20H2V10H7.99997V20Z" stroke="black" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
                         </svg>
                     </button>
                 </div>
-            </div>
+            </section>
+            <section class="optiflowz-chat-body">
+                <div class="optiflowz-chat-messages">
+                    <div class="optiflowz-chat-message-agent">
+                        <img src="Image.png" alt="Agent Avatar">
+                        <div>
+                            <p>Welcome to the chat! How can I assist you today?</p>
+                            <span>16:52</span>
+                        </div>
+                    </div>
+                    <div class="optiflowz-chat-message-user">
+                        <div>
+                            <p>Hello!</p>
+                            <span>16:53</span>
+                        </div>
+                    </div>
+                    <div class="optiflowz-chat-message-agent">
+                        <img src="Image.png" alt="Agent Avatar">
+                        <div>
+                            <p>Welcome to the chat! How can I assist you today?</p>
+                            <span>16:52</span>
+                        </div>
+                    </div>
+                    <div class="optiflowz-chat-message-user">
+                        <div>
+                            <p>Hello! I need help with my account.</p>
+                            <span>16:53</span>
+                        </div>
+                    </div>
+                    <div class="optiflowz-chat-message-agent">
+                        <img src="Image.png" alt="Agent Avatar">
+                        <div>
+                            <p>Welcome to the chat! How can I assist you today?</p>
+                            <span>16:52</span>
+                        </div>
+                    </div>
+                    <div class="optiflowz-chat-message-user">
+                        <div>
+                            <p>Hello! I need help with my account.</p>
+                            <span>16:53</span>
+                        </div>
+                    </div>
+                </div>
+            </section>
+            <section class="optiflowz-chat-input">
+                <div>
+                    <textarea name="chat-input" id="optiflowz-chat-textarea" placeholder="Unesite poruku..."></textarea>
+                    <button id="optiflowz-chat-send">
+                        <svg data-v-2a7fb1c3="" viewBox="0 0 24 24" width="24" height="24"><path fill="currentColor" d="m2 21l21-9L2 3v7l15 2l-15 2z"></path></svg>
+                    </button>
+                </div>
+            </section>
         </div>
     </div>
 </body>

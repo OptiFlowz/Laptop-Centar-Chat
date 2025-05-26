@@ -1,254 +1,387 @@
 @import url('https://fonts.googleapis.com/css2?family=Geist:wght@100..900&display=swap');
-:root{
-    --primary:#4680FD;
-    --secondary:#0034A3;
-
-    --chat-borderRadius: 10px;
-    --chat-width:400px;
-    --chat-height:700px;
-
-    /*HEADER*/
-    --header-color:#1a1b1d;
-    --header-borderColor:#5a5b5c;
-    --chatterName-color:white;
-    --header-object-spacing:10px;
-
-    /*CHAT*/
-    --chat-holder-borderRadius:15px;
-    --chat-holder-backgroundColor:#F6F9FF;
-    --light-border-color:#d2d0dc;
-
-
-    --other-users-message-box:white;
-    --other-users-message-text:#4F586D;
-    --other-users-message-timestamp:#9098B2;
-}
 
 body{
-    background-color: #1e1e1e;
+    background-color: #212027;
 }
 
-.chatWrapper{
-    font-family: Geist;
+:root{
+    /* MAIN SETTINGS */
+    --chat-desktop-width: 375px;
+    --chat-desktop-height: 575px;
+    --chat-primary: #4680FD;
+    --chat-secondary: #0034A3;
+    --chatMainGradient: linear-gradient(90deg, #4680FD, #0034A3);
+    --chat-chatBackground: #F6F9FF;
+    --chat-borderRadius: 15px;
+    --chat-border: 1px solid rgba(255, 255, 255, 0.5);
+
+    /* CHAT OPEN BUTTON SETTINGS */
+    --chat-messageOpenBorderRadius: 50%;
+
+    /* CHAT HEADER SETTINGS */
+    --chat-headerGradient: linear-gradient(90deg, #3A3C41, #131417);
+    --chat-headerTextColor: #FFFFFF;
+    --chat-headerButtonBackground: linear-gradient(90deg, #FFFFFF, #E2EBFF);
+    --chat-headerButtonSVGFill: #131417;
+
+    /* CHAT BODY SETTINGS */
+    --chat-messageBoxShadow: 0px 0px 20px rgba(26, 27, 49, 0.1);
+    --chat-linkColor: #0034A3;
+    --chat-botMessageBackground: #ffffff;
+    --chat-botMessageColor: #131417;
+    --chat-userMessageTextColor: #ffffff;
+    --chat-userMessageBackground: linear-gradient(90deg, #4680FD, #0034A3);
+
+    /* CHAT INPUT SETTINGS */
+    --chat-inputBackground: #FFFFFF;
+    --chat-inputBorder: 1px solid rgba(75, 70, 116, 0.3);
+    --chat-inputBorderRadius: 10px;
+    --chat-inputSendButtonBackground: linear-gradient(90deg, #4680FD, #0034A3);
+    --chat-inputSendButtonBorderRadius: 7px;
+    --chat-inputSendButtonSVGFill: #FFFFFF;
+    --chat-inputTextAreaPlaceholderColor: rgba(111, 122, 146, 0.7);
+}
+
+/* CHAT MAIN */
+
+#optiflowz-chat{
     position: fixed;
-    bottom: 10%;
-    right: 6%;
-    background-color: var(--header-color);
-    width: var(--chat-width);
-    height: var(--chat-height);
-    border-radius: var(--chat-borderRadius);
-    background-image: url("images/Linear\ 1.png");
-    background-repeat: no-repeat;
-    background-size: contain;
-    background-position: 0 -10%;
-    display: flex;
-    flex-direction: column;
-    overflow: hidden;
-}
-.chatHeader{
-    display: flex;
-    width: 100%;
-    height: 90px;
-    padding-bottom: 20px;
-    margin-bottom: -20px;
-    align-items: center;
-    justify-content: space-between;
-    padding-inline: var(--chat-holder-borderRadius);
-    box-sizing: border-box;
-    border-top: 1px solid var(--header-borderColor);
-    border-inline: 1px solid var(--header-borderColor);
-    border-top-left-radius: var(--chat-borderRadius);
-    border-top-right-radius: var(--chat-borderRadius);
+    bottom: 0;
+    right: 0;
+    display: flex !important;
+    gap: 15px;
+    padding: 15px;
+    flex-direction: column-reverse;
+    justify-content: flex-end;
+    align-items: flex-end;
+    z-index: 999999999;
 }
 
-.chatterInfo{
-    display: flex;
-    align-items: center;
-    gap: var(--header-object-spacing);
-    color: var(--chatterName-color);
-    font-weight: 600;
-}
-.chatterInfo img{
-    aspect-ratio: 1/1;
-    width: 35px;
+#optiflowz-chat *{
+    font-family: "Geist", sans-serif !important;
+    font-optical-sizing: auto !important;
+    font-style: normal !important;
+    box-sizing: border-box !important;
 }
 
-.buttons{
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    gap: var(--header-object-spacing);
-}
-.buttons button{
-    width: 35px;
-    aspect-ratio: 1/1;
+#optiflowz-chat-open{
+    background:  var(--chatMainGradient);
     border: none;
-    border-radius: 7px;
+    padding: 0px !important;
+    width: 65px;
+    height: 65px;
+    border-radius: var(--chat-messageOpenBorderRadius) !important;
+    cursor: pointer;
     display: flex;
     align-items: center;
     justify-content: center;
-}
-.buttons button img{
-    aspect-ratio: 1/1;
-    width: 80%;
+    transition: all .2s ease-out;
 }
 
-.chatHolder{
-    background-color: var(--chat-holder-backgroundColor);
-    width: 100%;
-    flex-grow: 1;
-    border-top-left-radius: var(--chat-holder-borderRadius);
-    border-top-right-radius: var(--chat-holder-borderRadius);
-    display: flex;
-    flex-direction: column;
-    justify-content: flex-end;
-    overflow: hidden;
-    position: relative;
+#optiflowz-chat-open svg{
+    width: 35px;
+    height: 35px;
+    animation: iconAppear .1s ease-in-out;
 }
 
-
-.convoWrapper{
-    width: 100%;
-    overflow-y: overlay;
-    box-sizing: border-box;
-    flex-grow: 1;
-    border-inline:2px solid transparent ;
-    scroll-behavior: smooth;
+#optiflowz-chat-open svg:nth-child(1){
+    display: block;
 }
-.convoWrapper::-webkit-scrollbar{
-    width: 6px;
-}
-.convoWrapper::-webkit-scrollbar-thumb
-{
-	border-radius: 10px;
-    border-right:2px solid var(c);
-	background-color: var(--other-users-message-text);
-}
-.convoWrapper::-webkit-scrollbar-track{
-    margin-top: var(--chat-holder-borderRadius);
-}
-
-.chat{
-    width: 100%;
-    height: fit-content;
-    display: flex;
-    flex-direction: column;
-    justify-content: end;
-    padding-inline: 10px;
-    box-sizing: border-box;
-}
-
-.chatActivity{
-    width: 100%;
-    height: 0px;
-}
-.chatInputHolder{
-    width: 100%;
-    height: 80px;
-    padding: 10px;
-    box-sizing: border-box;
-}
-.userInput{
-    width: 100%;
-    height: 100%;
-    background-color: white;
-    border-radius: 10px;
-    border: 1px solid var(--light-border-color);
-    box-sizing: border-box;
-    display: flex;
-    align-items: center;
-    padding: 10px;
-    gap: 10px;
-    box-shadow: 0px 4px 15px 0px rgba(28, 33, 121, .10);
-}
-
-.userInput textarea{
-    font-family: Geist;
-    background-color: transparent;
-    border: none;
-    flex-grow: 1;
-    font-size: .9em !important;
-    padding-top: 1.2rem;
-    resize: none;
-    overflow-y: scroll;
-    outline:none;
-}
-.userInput textarea::-webkit-scrollbar{
+#optiflowz-chat-open svg:nth-child(2){
     display: none;
 }
+.chat-open #optiflowz-chat-open svg:nth-child(1){
+    display: none;
+}
+.chat-open #optiflowz-chat-open svg:nth-child(2){
+    display: block;
+}
 
-.userInput button{
-    height: 100%;
-    aspect-ratio: 1/1;
-    border: none;
-    background-color: transparent;
+@keyframes iconAppear {
+    from{ opacity: 0; transform: scale(0); }
+    top{ opacity: 1; transform: scale(1); }
+}
+
+#optiflowz-chat-open svg path{
+    fill: white;
+}
+
+#optiflowz-chat-open:hover{
+    transform: scale(1.05);
+    filter: brightness(0.8);
+}
+#optiflowz-chat-open.buttonDown{
+    transform: scale(0.92) !important;
+}
+
+.optiflowz-chat-wrapper{
+    max-width: var(--chat-desktop-width);
+    width: calc(100vw - 30px);
+    max-height: var(--chat-desktop-height);
+    height: calc(100dvh - 110px);
+    background: var(--chat-headerGradient);
+    border-radius: var(--chat-borderRadius);
+    outline: var(--chat-border);
     display: flex;
-    justify-content: center;
     align-items: center;
-}
-
-#attachmentBtn svg{
-    width: 20px;
-    aspect-ratio: 1/1;
-}
-
-#sendBtn{
-    background-image: linear-gradient(120deg,var(--primary),var(--secondary));
-    border-radius: 8px;
-}
-#sendBtn svg{
-    width: 15px;
-    aspect-ratio: 1/1;
-}
-
-.userMessageHolder{
-    display: flex;
-    align-items: start;
-    justify-content: end;
-    width: 100%;
-    gap: 10px;
-    position: relative;
-    margin-top: 15px;
-}
-.userMessageHolder img{
-    width: 35px;
-    aspect-ratio: 1/1;
-}
-
-
-.messageHolder{
-    border-radius: 15px;
-    background: linear-gradient(90deg,var(--primary),var(--secondary));
-    padding: 15px;
-    display: flex;
+    justify-content: space-between;
     flex-direction: column;
-    gap: 5px;
-    max-width: 60%;
+    overflow: hidden;
+    transform-origin: bottom right;
+    transition: opacity .1s ease-in-out, transform .15s ease-in-out;
+    transform: scale(0);
+    opacity: 0;
+    pointer-events: none;
 }
-.message{
-    color: white;
-    overflow-wrap: break-word;
+@media screen and (max-width: 480px) {
+    .optiflowz-chat-wrapper{
+        max-height: calc(100dvh - 110px);
+        max-width: calc(100vw - 30px);
+    }
+}
+
+.chat-displayNone{
+    display: none !important;
+}
+
+.chat-open .optiflowz-chat-wrapper{
+    transform: scale(1);
+    opacity: 1;
+    pointer-events: all;
+}
+
+/* CHAT HEADER */
+
+.optiflowz-chat-header{
     width: 100%;
-}
-.timeStamp
-{
-    font-size: 13px;
-    color: #CED5E9;
-}
-
-.otherUserMessageHolder{
-    justify-content: start;
+    background: transparent;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 15px;
 }
 
-.otherUserMessageHolder .messageHolder{
-    background: none;
-    background-color: var(--other-users-message-box);
-    border: 1px solid var(--light-border-color);
-     align-items: end;
+.optiflowz-chat-header div{
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    color: var(--chat-headerTextColor);
 }
-.otherUserMessageHolder .message{
-    color: var(--other-users-message-text);
+
+.optiflowz-chat-header div img{
+    width: 32px;
+    height: 32px;
+    border-radius: 50%;
 }
-.otherUserMessageHolder .timeStamp{
-    color: var(--other-users-message-timestamp);
+
+.optiflowz-chat-header div h1{
+    font-size: 1.3rem;
+    font-weight: 600;
+    margin: 0;
+    color: var(--chat-headerTextColor);
+}
+
+.optiflowz-chat-header div button{
+    background: var(--chat-headerButtonBackground);
+    border-radius: 7px;
+    border: none;
+    width: 32px;
+    height: 32px;
+    display: grid;
+    place-items: center;
+    cursor: pointer;
+    transition: all .15s ease-in-out;
+}
+
+.optiflowz-chat-header div button svg{
+    width: 20px;
+    height: 20px;
+    transition: all .1s ease-in-out;
+}
+.optiflowz-chat-header div button svg path{
+    stroke: var(--chat-headerButtonSVGFill);
+}
+
+.optiflowz-chat-header div button:hover{
+    filter: brightness(0.8);
+}
+
+.optiflowz-chat-header div button:hover svg{
+    scale: 0.95;
+}
+
+/* CHAT BODY */
+
+.optiflowz-chat-body{
+    position: relative;
+    background: var(--chat-chatBackground);
+    border-radius: 20px 20px 0px 0px;
+    border-right: 2px solid transparent;
+    flex-grow: 1;
+    width: 100%;
+    overflow-y: scroll;
+}
+
+.optiflowz-chat-body::-webkit-scrollbar{
+    width: 6px;
+}
+
+.optiflowz-chat-body::-webkit-scrollbar-track{
+    background-color: transparent;
+    margin-top: 25px;
+}
+
+.optiflowz-chat-body::-webkit-scrollbar-thumb{
+    background: var(--chat-headerGradient);
+    border-radius: 10px;
+}
+
+.optiflowz-chat-messages{
+    width: 100%;
+    min-height: 100%;
+    display: flex;
+    justify-content: flex-end;
+    flex-direction: column;
+    gap: 15px;
+    padding: 15px;
+}
+
+.optiflowz-chat-messages > div{
+    display: flex;
+    align-items: flex-start;
+    gap: 5px;
+}
+
+.optiflowz-chat-messages div div{
+    background: var(--chat-botMessageBackground);
+    color: var(--chat-botMessageColor);
+    box-shadow: var(--chat-messageBoxShadow);
+    font-weight: 400;
+    max-width: calc(90% - 17px);
+    min-width: 100px;
+    width: fit-content;
+    padding: 20px;
+    padding-block: 15px;
+    border-radius: 15px;
+    margin: 0px;
+    word-break: break-word;
+    -ms-word-break: break-word;
+}
+
+.optiflowz-chat-messages div div p{
+    margin: 0;
+    font-size: 0.95rem;
+    line-height: 1.2rem;
+}
+
+.optiflowz-chat-messages div div span{
+    font-size: 0.9rem;
+    opacity: 0.6;
+    display: block;
+    width: 100%;
+    text-align: right;
+    margin-top: 5px;
+}
+
+.optiflowz-chat-message-user{
+    align-self: flex-end;
+    flex-direction: row-reverse;
+}
+
+.optiflowz-chat-message-user div{
+    background: var(--chat-userMessageBackground) !important;
+    color: var(--chat-userMessageTextColor) !important;
+}
+
+.optiflowz-chat-message-user div span{
+    text-align: left !important;
+}
+
+.optiflowz-chat-messages div img{
+    width: 35px;
+    height: 35px;
+    border-radius: 50%;
+    flex-shrink: 0;
+}
+
+.optiflowz-chat-messages div p a{
+    color: var(--chat-linkColor);
+    font-weight: 700;
+}
+
+/* CHAT INPUT */
+
+.optiflowz-chat-input{
+    background: var(--chat-chatBackground);
+    min-height: 65px;
+    width: 100%;
+    padding: 10px;
+    padding-top: 2px;
+    flex-shrink: 0;
+}
+
+.optiflowz-chat-input div{
+    width: 100%;
+    height: 100%;
+    display: flex;
+    padding: 0px;
+    align-items: center;
+    justify-content: space-between;
+    background-color: var(--chat-inputBackground);
+    border: var(--chat-inputBorder);
+    border-radius: var(--chat-inputBorderRadius);
+}
+
+.optiflowz-chat-input div:focus-within{
+    outline: 2px solid var(--chat-primary);
+}
+
+.optiflowz-chat-input div textarea{
+    box-sizing: border-box;
+    height: 45px;
+    flex-grow: 1;
+    background-color: transparent;
+    border: none;
+    resize: none;
+    font-size: 1.1rem;
+    padding-top: 11px;
+    padding-left: 15px;
+}
+
+.optiflowz-chat-input div textarea::placeholder{
+    color: var(--chat-inputTextAreaPlaceholderColor);
+}
+
+.optiflowz-chat-input div textarea:focus{
+    outline: none;
+}
+
+.optiflowz-chat-input div button{
+    background: var(--chat-inputSendButtonBackground);
+    border: none;
+    border-radius: var(--chat-inputSendButtonBorderRadius);
+    margin: 7px;
+    aspect-ratio: 1 / 1;
+    display: grid;
+    place-items: center;
+    cursor: pointer;
+    padding: 10px;
+    transition: all .15s ease-in-out;
+}
+
+.optiflowz-chat-input div button:hover{
+    filter: brightness(0.8);
+}
+
+.optiflowz-chat-input div button svg{
+    width: 20px;
+    height: 20px;
+    transition: all .1s ease-in-out;
+}
+.optiflowz-chat-input div button svg path{
+    fill: var(--chat-inputSendButtonSVGFill);
+}
+
+.optiflowz-chat-input div button:hover svg{
+    scale: 0.95;
 }
