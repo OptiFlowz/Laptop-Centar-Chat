@@ -60,7 +60,7 @@ socket.on('receive_message', (data) => {
 
         scrollToBottom();
     }
-    if(data.author=='AIServer'){
+    if(data.author!='customer'){
         var userMsg=document.createElement("div");
         userMsg.classList.add("optiflowz-chat-message-agent");
         userMsg.innerHTML=`
@@ -80,7 +80,7 @@ function scrollToBottom(){
     chatBody.scrollTo(0,chatBody.scrollHeight);
 }
 
-
+ 
 {
     const openChatButton = document.getElementById("optiflowz-chat-open");
 const chat = document.getElementById("optiflowz-chat");
