@@ -21,6 +21,7 @@ socket.once("connect", async () => {
 var sendBtn = document.getElementById('optiflowz-chat-send');
 var textarea = document.getElementById('optiflowz-chat-textarea');
 var chatMessages = document.querySelector('.optiflowz-chat-messages');
+var newChatBtn = document.getElementById('newChatBtn');
 
 sendBtn.addEventListener("click",()=>{
     var textToSend=textarea.value.trim()
@@ -47,7 +48,48 @@ sendBtn.addEventListener("click",()=>{
 });
 
 
+
+
+newChatBtn.addEventListener("click",()=>{
+    socket.disconnect();
+    socket = io(socketString, {
+        transports: ['websocket'],
+        forceNew: true,
+    });
+    
+    localStorage.clear();
+
+    socket.once("connect", () => {
+        window.socket = socket;
+        if(localStorage.sessionID == undefined){
+            localStorage.setItem("sessionID", socket.id);
+        }
+        socket.emit('join_room',localStorage.sessionID)
+        chatMessages.innerHTML = `
+        <div class="optiflowz-chat-message-agent">
+            <img src="Image.png" alt="Agent Avatar">
+            <div>
+                    <p>Welcome to the chat! How can I assist you today?</p>
+                    <span>16:52</span>
+            </div>
+        </div>`;
+    });
+
+    socket.on('receive_message', (data) => {
+        receiveMessage(data)
+    });
+});
+
 socket.on('receive_message', (data) => {
+    receiveMessage(data)
+});
+
+var chatBody=document.querySelector('.optiflowz-chat-body')
+function scrollToBottom(){
+    chatBody.scrollTo(0,chatBody.scrollHeight);
+}
+
+function receiveMessage(data){
     if(data.author=='customer' && socket.id != data.socketId){
         var userMsg=document.createElement("div");
         userMsg.classList.add("optiflowz-chat-message-user");
@@ -73,13 +115,7 @@ socket.on('receive_message', (data) => {
 
         scrollToBottom();
     }
-});
-
-var chatBody=document.querySelector('.optiflowz-chat-body')
-function scrollToBottom(){
-    chatBody.scrollTo(0,chatBody.scrollHeight);
 }
-
  
 {
     const openChatButton = document.getElementById("optiflowz-chat-open");
