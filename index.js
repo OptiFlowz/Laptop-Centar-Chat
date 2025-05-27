@@ -103,7 +103,7 @@ function receiveMessage(data){
         userMsg.classList.add("optiflowz-chat-message-user");
         userMsg.innerHTML=`
         <div>
-            <p>${data.content}</p>
+            <p>${formatMessage(data.content)}</p>
             <span>${data.timeStamp}</span>
         </div>`;
         chatMessages.appendChild(userMsg);
@@ -123,6 +123,14 @@ function receiveMessage(data){
 
         scrollToBottom();
     }
+}
+
+function formatMessage(text) {
+    let formatted = text.replace(/\*\*(.*?)\*\*/g, '<strong>$1</strong>');
+    formatted = formatted.replace(/\n/g, '<br>');
+    formatted = formatted.replace(/\[([^\]]+)\]\((https?:\/\/[^\s)]+)\)/g, '<a href="$2" target="_blank">$1</a>');
+
+    return formatted;
 }
  
 {
