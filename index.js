@@ -61,6 +61,19 @@ socket.on('receive_message', (data) => {
 
         scrollToBottom();
     }
+    if(data.author=='AIServer'){
+        var userMsg=document.createElement("div");
+        userMsg.classList.add("optiflowz-chat-message-agent");
+        userMsg.innerHTML=`
+        <img src="Image.png" alt="Agent Avatar">
+        <div>
+            <p>${data.content}</p>
+            <span>16:52</span>
+        </div>`;
+        chatMessages.appendChild(userMsg);
+
+        scrollToBottom();
+    }
 });
 
 var chatBody=document.querySelector('.optiflowz-chat-body')
