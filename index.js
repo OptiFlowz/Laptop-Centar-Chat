@@ -24,15 +24,20 @@ var chatMessages = document.querySelector('.optiflowz-chat-messages');
 var newChatBtn = document.getElementById('newChatBtn');
 
 sendBtn.addEventListener("click",()=>{
+    sendMessage();
+});
+
+function sendMessage(){
     var textToSend=textarea.value.trim()
     if(textToSend!="")
     {
         var userMsg=document.createElement("div");
+        var time = new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit', hour12: false });
         userMsg.classList.add("optiflowz-chat-message-user");
         userMsg.innerHTML=`
         <div>
             <p>${textToSend}</p>
-            <span>16:53</span>
+            <span>${time}</span>
         </div>`;
         chatMessages.appendChild(userMsg);
         
@@ -42,13 +47,11 @@ sendBtn.addEventListener("click",()=>{
             sessionID: localStorage.sessionID,
             socketId: socket.id,
             author: 'customer',
-            content:  textToSend
+            content:  textToSend,
+            timeStamp: time
         });
     }
-});
-
-
-
+}
 
 newChatBtn.addEventListener("click",()=>{
     socket.disconnect();
@@ -96,7 +99,7 @@ function receiveMessage(data){
         userMsg.innerHTML=`
         <div>
             <p>${data.content}</p>
-            <span>16:53</span>
+            <span>${data.timeStamp}</span>
         </div>`;
         chatMessages.appendChild(userMsg);
 
@@ -109,7 +112,7 @@ function receiveMessage(data){
         <img src="Image.png" alt="Agent Avatar">
         <div>
             <p>${data.content}</p>
-            <span>16:52</span>
+            <span>${data.timeStamp}</span>
         </div>`;
         chatMessages.appendChild(userMsg);
 
@@ -118,7 +121,8 @@ function receiveMessage(data){
 }
  
 {
-    const openChatButton = document.getElementById("optiflowz-chat-open");
+const openChatButton = document.getElementById("optiflowz-chat-open");
+const textarea = document.getElementById("optiflowz-chat-textarea");
 const chat = document.getElementById("optiflowz-chat");
 let isOptiFlowzChatOpen = false;
 let chatOpenTimeout = setTimeout(() => {}, 150);
@@ -171,4 +175,30 @@ openChatButton.addEventListener("click", () => {
     }
     isOptiFlowzChatOpen = !isOptiFlowzChatOpen;
 })
+
+textarea.addEventListener('keydown', (e) => {
+    if(e.key.toLocaleLowerCase() == "enter" && !e.shiftKey){
+        e.preventDefault();
+        sendMessage();
+    }
+})
+textarea.addEventListener('keyup', () => {
+    const textToSend = textarea.value.trim();
+    if(textToSend != ""){
+        sendBtn.classList.add("clickable");
+        sendBtn.disabled = false;
+    }else{
+        sendBtn.classList.remove("clickable");
+        sendBtn.disabled = true;
+    }
+})
+
+textarea.addEventListener('focusin', () => {
+    document.addEventListener('keyup', submitMessage);
+})
+
+textarea.addEventListener('focusout', () => {
+    document.removeEventListener('keyup', submitMessage);
+})
+
 }
