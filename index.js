@@ -16,7 +16,6 @@ socket.once("connect", async () => {
         //Ucitavanje prosle konverzacije
     }
     socket.emit('join_room',localStorage.sessionID)
-
 });
 
 var sendBtn = document.getElementById('optiflowz-chat-send');
@@ -79,4 +78,61 @@ socket.on('receive_message', (data) => {
 var chatBody=document.querySelector('.optiflowz-chat-body')
 function scrollToBottom(){
     chatBody.scrollTo(0,chatBody.scrollHeight);
+}
+
+
+{
+    const openChatButton = document.getElementById("optiflowz-chat-open");
+const chat = document.getElementById("optiflowz-chat");
+let isOptiFlowzChatOpen = false;
+let chatOpenTimeout = setTimeout(() => {}, 150);
+
+if(localStorage.leftChatOpen == 1){
+    isOptiFlowzChatOpen=true;
+    chat.children[1].style.display = "flex";
+        chatOpenTimeout = setTimeout(() => {
+            chat.classList.add("chat-open");
+            scrollToBottom();
+        }, 10);
+}
+
+openChatButton.addEventListener("mousedown", () => {
+    openChatButton.classList.add("buttonDown");
+})
+openChatButton.addEventListener("touchstart", () => {
+    openChatButton.classList.add("buttonDown");
+})
+
+openChatButton.addEventListener("mouseup", () => {
+    openChatButton.classList.remove("buttonDown");
+})
+openChatButton.addEventListener("touchend", () => {
+    openChatButton.classList.remove("buttonDown");
+})
+
+openChatButton.addEventListener("mouseleave", () => {
+    openChatButton.classList.remove("buttonDown");
+})
+openChatButton.addEventListener("touchcancel", () => {
+    openChatButton.classList.remove("buttonDown");
+})
+
+openChatButton.addEventListener("click", () => {
+    clearTimeout(chatOpenTimeout);
+    if(isOptiFlowzChatOpen){
+        chat.classList.remove("chat-open");
+        localStorage.leftChatOpen = 0;
+        chatOpenTimeout = setTimeout(() => {
+            chat.children[1].style.display = "none";
+        }, 150);
+    }else{
+        localStorage.leftChatOpen = 1;
+        chat.children[1].style.display = "flex";
+        chatOpenTimeout = setTimeout(() => {
+            chat.classList.add("chat-open");
+            scrollToBottom();
+        }, 10);
+    }
+    isOptiFlowzChatOpen = !isOptiFlowzChatOpen;
+})
 }
