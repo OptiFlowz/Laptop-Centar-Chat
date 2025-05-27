@@ -265,9 +265,7 @@ body{
     color: var(--chat-botMessageColor);
     box-shadow: var(--chat-messageBoxShadow);
     font-weight: 400;
-    max-width: calc(90% - 17px);
-    min-width: 100px;
-    width: fit-content;
+    max-width: calc(75vw - 20px);
     padding: 20px;
     padding-block: 15px;
     border-radius: 15px;
