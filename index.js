@@ -1,6 +1,6 @@
 import "https://cdn.socket.io/4.7.2/socket.io.min.js";
 
-const socketString = 'http://localhost:3000/';
+const socketString = 'https://f419-2a06-63c0-a01-6800-2883-fca3-789e-dc95.ngrok-free.app';
 var socket;
 socket = io(socketString, {
     transports: ['websocket'],
