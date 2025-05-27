@@ -41,7 +41,12 @@ function sendMessage(){
         </div>`;
         chatMessages.appendChild(userMsg);
         
-        scrollToBottom();
+        setTimeout(() => {
+            scrollToBottom();
+            textarea.value = "";
+            sendBtn.classList.remove("clickable");
+            sendBtn.disabled = true;
+        }, 5);
 
         socket.emit("send_message", {
             sessionID: localStorage.sessionID,
