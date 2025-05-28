@@ -75,7 +75,7 @@ newChatBtn.addEventListener("click",()=>{
         socket.emit('join_room',localStorage.sessionID)
         chatMessages.innerHTML = `
         <div class="optiflowz-chat-message-agent">
-            <img src="Image.png" alt="Agent Avatar">
+            <img src="aiAgentImg.png" alt="Agent Avatar">
             <div>
                     <p>Welcome to the chat! How can I assist you today?</p>
                     <span>16:52</span>
@@ -114,7 +114,7 @@ function receiveMessage(data){
         var userMsg=document.createElement("div");
         userMsg.classList.add("optiflowz-chat-message-agent");
         userMsg.innerHTML=`
-        <img src="Image.png" alt="Agent Avatar">
+        <img src="aiAgentImg.png" alt="Agent Avatar">
         <div>
             <p>${data.content}</p>
             <span>${data.timeStamp}</span>
@@ -204,14 +204,6 @@ textarea.addEventListener('keyup', () => {
         sendBtn.classList.remove("clickable");
         sendBtn.disabled = true;
     }
-})
-
-textarea.addEventListener('focusin', () => {
-    document.addEventListener('keyup', submitMessage);
-})
-
-textarea.addEventListener('focusout', () => {
-    document.removeEventListener('keyup', submitMessage);
 })
 
 }
