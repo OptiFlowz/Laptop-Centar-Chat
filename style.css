@@ -10,12 +10,12 @@ body{
     --chat-desktop-height: 550px;
     --chat-primary: #4680FD;
     --chat-secondary: #0034A3;
-    --chatMainGradient: linear-gradient(90deg, #4680FD, #0034A3);
     --chat-borderRadius: 15px;
     --chat-border: 1px solid rgba(246, 249, 255, 0.5);
 
     /* CHAT OPEN BUTTON SETTINGS */
     --chat-messageOpenBorderRadius: 50%;
+    --chatMainGradient: var(--chat-primary);
 
     /* CHAT HEADER SETTINGS */
     --chat-headerGradient: linear-gradient(-90deg, #3A3C41, #131417);
@@ -34,14 +34,15 @@ body{
     --chat-botMessageBackground: #ffffff;
     --chat-botMessageColor: #131417;
     --chat-userMessageTextColor: #ffffff;
-    --chat-userMessageBackground: linear-gradient(-90deg, #3A3C41, #1e1f24);
+    --chat-userMessageBackground: #3A3C41;
 
     /* CHAT INPUT SETTINGS */
     --chat-inputBackground: #FFFFFF;
     --chat-inputOutline: 1px solid #131417;
     --chat-inputBorder: 1px solid rgba(75, 70, 116, 0.3);
     --chat-inputBorderRadius: 10px;
-    --chat-inputSendButtonBackground: linear-gradient(90deg, #4680FD, #0034A3);
+    --chat-inputSendButtonBackground: var(--chat-primary);
+    --chat-inputSendButtonDisabledBackground: rgb(197, 197, 197);
     --chat-inputSendButtonBorderRadius: 7px;
     --chat-inputSendButtonSVGFill: #FFFFFF;
     --chat-inputTextAreaPlaceholderColor: rgba(111, 122, 146, 0.7);
@@ -289,6 +290,7 @@ body{
     flex-direction: column;
     gap: 15px;
     padding: 15px;
+    padding-right: 12px;
 }
 
 .optiflowz-chat-messages > div{
@@ -360,6 +362,55 @@ body{
     font-weight: 700;
 }
 
+.optiflowz-chat-form div{
+    width: 100%;
+    display: flex;
+    align-items: center;
+    flex-direction: column;
+    gap: 10px;
+    border: var(--chat-inputBorder);
+}
+
+.optiflowz-chat-form div p{
+    text-align: center;
+}
+
+.optiflowz-chat-form div input{
+    width: 100%;
+    padding: 10px;
+    border-radius: 10px;
+    border: var(--chat-inputBorder);
+}
+.optiflowz-chat-form div input::placeholder{
+    color: var(--chat-inputTextAreaPlaceholderColor);
+}
+.optiflowz-chat-form div input:focus{
+    outline: none;
+    border: var(--chat-inputOutline);
+}
+.optiflowz-chat-form section{
+    width: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 10px;
+}
+.optiflowz-chat-form section button{
+    padding: 10px;
+    padding-inline: 25px;
+    border-radius: 10px;
+    border: var(--chat-inputBorder);
+    cursor: pointer;
+    transition: all .1s ease-in-out;
+}
+.optiflowz-chat-form section button:nth-child(2){
+    background: var(--chat-primary);
+    color: #FFFFFF;
+}
+.optiflowz-chat-form section button:hover{
+    filter: brightness(0.8);
+}
+
 /* CHAT INPUT */
 
 .optiflowz-chat-input{
@@ -423,7 +474,7 @@ body{
 
 .optiflowz-chat-input div button{
     filter: grayscale(1);
-    background: var(--chat-inputSendButtonBackground);
+    background: var(--chat-inputSendButtonDisabledBackground);
     border: none;
     border-radius: var(--chat-inputSendButtonBorderRadius);
     margin: 7px;
@@ -436,6 +487,7 @@ body{
 }
 
 .optiflowz-chat-input div button.clickable{
+    background: var(--chat-inputSendButtonBackground);
     pointer-events: all;
     cursor: pointer;
     filter: grayscale(0);
