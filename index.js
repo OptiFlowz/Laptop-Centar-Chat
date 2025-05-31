@@ -1,6 +1,6 @@
 import "https://cdn.socket.io/4.7.2/socket.io.min.js";
 
-const socketString = 'https://f419-2a06-63c0-a01-6800-2883-fca3-789e-dc95.ngrok-free.app';
+const socketString = 'https://3e9c-2a06-63c0-a01-6800-a0ff-2e5a-f4f2-7814.ngrok-free.app/';
 var socket;
 socket = io(socketString, {
     transports: ['websocket'],
@@ -56,6 +56,36 @@ function sendMessage(){
             timeStamp: time
         });
     }
+}
+
+window.requestAgent = function() {
+    var nameInput = document.querySelector('.optiflowz-chat-form-name');
+    var emailInput = document.querySelector('.optiflowz-chat-form-email');
+    var name = nameInput.value.trim();
+    var email = emailInput.value.trim();
+    if(name == ""){
+        nameInput.classList.add("error");
+        return;
+    }
+    else{
+        nameInput.classList.remove("error");
+    }
+    if(email == ""){
+        emailInput.classList.add("error");
+        return;
+    }
+    else{
+        emailInput.classList.remove("error");
+    }
+    socket.emit("req_agent", {
+        sessionID: localStorage.sessionID,
+        name: name,
+        email: email
+    });
+}
+
+window.removeFormFromBody = function(button) {
+    chatMessages.removeChild(button.parentElement.parentElement.parentElement);
 }
 
 newChatBtn.addEventListener("click",()=>{
@@ -205,5 +235,13 @@ textarea.addEventListener('keyup', () => {
         sendBtn.disabled = true;
     }
 })
+
+window.openOptiFlowzRatingScreen = function() {
+    document.querySelector('.optiflowz-rating-wrapper').classList.add('open');
+}
+
+window.closeOptiFlowzRatingScreen = function() {
+    document.querySelector('.optiflowz-rating-wrapper').classList.remove('open');
+}
 
 }

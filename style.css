@@ -389,6 +389,9 @@ body{
     outline: none;
     border: var(--chat-inputOutline);
 }
+.optiflowz-chat-form div input.error{
+    border: 1px solid red;
+}
 .optiflowz-chat-form section{
     width: 100%;
     display: flex;
@@ -410,6 +413,119 @@ body{
 }
 .optiflowz-chat-form section button:hover{
     filter: brightness(0.8);
+}
+
+/* CHAT RATING */
+
+.optiflowz-rating-wrapper{
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    padding: 20px;
+    z-index: 5;
+    background-color: rgba(0, 0, 0, 0.4);
+    -webkit-backdrop-filter: blur(5px);
+    backdrop-filter: blur(5px);
+    display: grid;
+    place-items: center;
+    pointer-events: none;
+    opacity: 0;
+    transition: all .15s ease-in-out;
+}
+
+.optiflowz-rating-wrapper.open{
+    pointer-events: all;
+    opacity: 1;
+}
+
+.optiflowz-rating-wrapper .closeRatingWrapper{
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    z-index: 0;
+}
+
+.optiflowz-rating-content{
+    background: var(--chat-botMessageBackground);
+    border: var(--chat-inputBorder);
+    border-radius: 20px;
+    padding: 20px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 20px;
+    z-index: 1;
+    transform: scale(0.5);
+    transition: all .15s ease-in-out;
+}
+
+.optiflowz-rating-wrapper.open .optiflowz-rating-content{
+    transform: scale(1);
+}
+
+.optiflowz-rating-content h2{
+    margin: 0px;
+    color: var(--chat-botMessageColor);
+    font-size: 1.1rem;
+    text-align: center;
+}
+
+.optiflowz-rating-content div{
+    display: flex;
+    gap: 10px;
+}
+
+.optiflowz-rating-content .optiflowz-rating-actions button{
+    border-radius: 20px;
+    height: 30px;
+    padding-inline: 15px;
+    background: var(--chat-botMessageBackground);
+    border: var(--chat-inputBorder);
+    transition: all .15s ease-in-out;
+    cursor: pointer;
+}
+.optiflowz-rating-content .optiflowz-rating-actions button:nth-child(2){
+    background: var(--chat-primary);
+    color: #FFF;
+}
+.optiflowz-rating-content .optiflowz-rating-actions button:hover{
+    filter: brightness(0.9);
+}
+
+.optiflowz-rating-content .optiflowz-rating-buttons button{
+    border-radius: 30px;
+    width: 30px;
+    height: 30px;
+    padding-inline: 0px;
+    background: var(--chat-botMessageBackground);
+    border: var(--chat-inputBorder);
+    transition: all .15s ease-in-out;
+    cursor: pointer;
+}
+
+.optiflowz-rating-content .optiflowz-rating-buttons button:hover{
+    border-radius: 7px;
+    font-weight: 700;
+}
+
+.optiflowz-rating-content .optiflowz-rating-buttons button:nth-child(1):hover{
+    background-color: rgb(255, 75, 75);
+}
+.optiflowz-rating-content .optiflowz-rating-buttons button:nth-child(2):hover{
+    background-color: rgb(255, 102, 56);
+}
+.optiflowz-rating-content .optiflowz-rating-buttons button:nth-child(3):hover{
+    background-color: rgb(255, 141, 48);
+}
+.optiflowz-rating-content .optiflowz-rating-buttons button:nth-child(4):hover{
+    background-color: rgb(255, 202, 88);
+}
+.optiflowz-rating-content .optiflowz-rating-buttons button:nth-child(5):hover{
+    background-color: rgb(255, 230, 0);
 }
 
 /* CHAT INPUT */

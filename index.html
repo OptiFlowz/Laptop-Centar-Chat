@@ -30,7 +30,7 @@
                             <path d="M6 7V18C6 19.1046 6.89543 20 8 20H16C17.1046 20 18 19.1046 18 18V7M6 7H5M6 7H8M18 7H19M18 7H16M10 11V16M14 11V16M8 7V5C8 3.89543 8.89543 3 10 3H14C15.1046 3 16 3.89543 16 5V7M8 7H16" stroke="black" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
                         </svg>
                     </button>
-                    <button>
+                    <button onclick="openOptiFlowzRatingScreen()">
                         <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
                             <path d="M7.99997 20H17.1919C17.9865 20 18.7058 19.5296 19.0243 18.8016L21.8323 12.3833C21.9429 12.1305 22 11.8576 22 11.5816V11C22 9.89543 21.1045 9 20 9H13.5L14.7066 4.5757C14.8772 3.95023 14.5826 3.2913 14.0027 3.00136V3.00136C13.4204 2.7102 12.7134 2.87256 12.3164 3.3886L8.41472 8.46082C8.14579 8.81044 7.99997 9.23915 7.99997 9.68024V20ZM7.99997 20H2V10H7.99997V20Z" stroke="black" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
                         </svg>
@@ -49,11 +49,11 @@
                     <div class="optiflowz-chat-form">
                         <div>
                             <p>Ispunite formular kako bismo vas povezali sa pravom osobom</p>
-                            <input type="text" placeholder="Ime i prezime" required>
-                            <input type="email" placeholder="Email adresa" required>
+                            <input type="text" placeholder="Ime i prezime" class="optiflowz-chat-form-name" required>
+                            <input type="email" placeholder="Email adresa" class="optiflowz-chat-form-email" required>
                             <section>
-                                <button>Otkaži</button>
-                                <button>Potrvdi</button>
+                                <button onclick="removeFormFromBody(this)">Otkaži</button>
+                                <button onclick="requestAgent()">Potrvdi</button>
                             </section>
                         </div>
                     </div>
@@ -67,6 +67,23 @@
                     </button>
                 </div>
             </section>
+            <div class="optiflowz-rating-wrapper">
+                <div class="closeRatingWrapper" onclick="closeOptiFlowzRatingScreen()"></div>
+                <div class="optiflowz-rating-content">
+                    <h2>Kako ste zadovoljni ovom konverzacijom?</h2>
+                    <div class="optiflowz-rating-buttons">
+                        <button data-rating="1">1</button>
+                        <button data-rating="2">2</button>
+                        <button data-rating="3">3</button>
+                        <button data-rating="4">4</button>
+                        <button data-rating="5" class="selected">5</button>
+                    </div>
+                    <div class="optiflowz-rating-actions">
+                        <button onclick="closeOptiFlowzRatingScreen()">Otkaži</button>
+                        <button onclick="rateTheConversation()">Potrvdi</button>
+                    </div>
+                </div>
+            </div>
         </div>
     </div>
 </body>
