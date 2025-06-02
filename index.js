@@ -12,9 +12,9 @@ socket.once("connect", async () => {
     if(localStorage.sessionID == undefined){
         localStorage.setItem("sessionID", socket.id);
     }
-    else{       
+    else{
         //Ucitavanje prosle konverzacije
-        console.log(load_convo(localStorage.sessionID));
+        loadChatHistory(localStorage.sessionID);
     }
     socket.emit('join_room',localStorage.sessionID)
 });
@@ -22,7 +22,7 @@ socket.once("connect", async () => {
 var sendBtn = document.getElementById('optiflowz-chat-send');
 var textarea = document.getElementById('optiflowz-chat-textarea');
 var chatMessages = document.querySelector('.optiflowz-chat-messages');
-var newChatBtn = document.getElementById('newChatBtn');
+var newChatBtn = document.getElementById('optiflowz-chat-new-chat');
 
 sendBtn.addEventListener("click",()=>{
     sendMessage();
@@ -59,6 +59,14 @@ function sendMessage(){
     }
 }
 
+document.getElementById("optiflowz-chat-request-agent").addEventListener("click", () => {
+    document.querySelector('.optiflowz-chat-form').classList.add('open');
+});
+
+window.closeOptiFlowzAgentForm = function() {
+    document.querySelector('.optiflowz-chat-form').classList.remove('open');
+}
+
 window.requestAgent = function() {
     var nameInput = document.querySelector('.optiflowz-chat-form-name');
     var emailInput = document.querySelector('.optiflowz-chat-form-email');
@@ -85,10 +93,6 @@ window.requestAgent = function() {
     });
 }
 
-window.removeFormFromBody = function(button) {
-    chatMessages.removeChild(button.parentElement.parentElement.parentElement);
-}
-
 newChatBtn.addEventListener("click",()=>{
     socket.disconnect();
     socket = io(socketString, {
@@ -100,9 +104,7 @@ newChatBtn.addEventListener("click",()=>{
 
     socket.once("connect", () => {
         window.socket = socket;
-        if(localStorage.sessionID == undefined){
-            localStorage.setItem("sessionID", socket.id);
-        }
+        localStorage.setItem("sessionID", socket.id);
         socket.emit('join_room',localStorage.sessionID)
         chatMessages.innerHTML = `
         <div class="optiflowz-chat-message-agent">
@@ -164,6 +166,31 @@ function formatMessage(text) {
     return formatted;
 }
  
+async function loadChatHistory(ssID) {
+    let chatHistory = await load_convo(ssID);
+    chatHistory.convo[0].conversation.forEach(message => {
+        let messageElement = document.createElement("div");
+        if (message.Sender === 's') {
+            messageElement.classList.add("optiflowz-chat-message-user");
+        } else if( message.Sender === 'a') {
+            messageElement.classList.add("optiflowz-chat-message-agent");
+            messageElement.innerHTML = `<img src="${chatHistory.convo[0].Agent.Image}" alt="Agent Avatar">`;
+        }
+        else {
+            messageElement.classList.add("optiflowz-chat-message-agent");
+            messageElement.innerHTML = `<img src="aiAgentImg.png" alt="Agent Avatar">`;
+        }
+
+        let messageTime = new Date(Number(message.Time)).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit', hour12: false });
+
+        messageElement.innerHTML += `
+            <div>
+                <p>${formatMessage(message.Content)}</p>
+                <span>${messageTime}</span>
+            </div>`;
+        chatMessages.appendChild(messageElement);
+    })
+}
 
 async function load_convo(ssID) {
     return new Promise((resolve, reject) => {
@@ -175,8 +202,6 @@ async function load_convo(ssID) {
       );
     });
 }
-
-
 
 {
 const openChatButton = document.getElementById("optiflowz-chat-open");
@@ -251,12 +276,16 @@ textarea.addEventListener('keyup', () => {
     }
 })
 
-window.openOptiFlowzRatingScreen = function() {
+document.getElementById("optiflowz-chat-rating").addEventListener("click", () => {
     document.querySelector('.optiflowz-rating-wrapper').classList.add('open');
-}
+});
 
 window.closeOptiFlowzRatingScreen = function() {
     document.querySelector('.optiflowz-rating-wrapper').classList.remove('open');
 }
+
+document.getElementById("optiflowz-chat-more").addEventListener("click", () => {
+    document.querySelector("#optiflowz-chat-more div").classList.toggle("open");
+})
 
 }

@@ -20,44 +20,27 @@
                     <h1>AI AGENT</h1>
                 </div>
                 <div>
-                    <button>
+                    <button id="optiflowz-chat-request-agent">
                         <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-                            <path d="M20.9844 10H17M20.9844 10V6M20.9844 10L17.6569 6.34315C14.5327 3.21895 9.46734 3.21895 6.34315 6.34315C3.21895 9.46734 3.21895 14.5327 6.34315 17.6569C9.46734 20.781 14.5327 20.781 17.6569 17.6569C18.4407 16.873 19.0279 15.9669 19.4184 15" stroke="black" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                            <path d="M18.5051 19H20C21.1046 19 22.0669 18.076 21.716 17.0286C21.1812 15.4325 19.8656 14.4672 17.5527 14.1329M14.5001 10.8645C14.7911 10.9565 15.1244 11 15.5 11C17.1667 11 18 10.1429 18 8C18 5.85714 17.1667 5 15.5 5C15.1244 5 14.7911 5.04354 14.5001 5.13552M9.5 14C13.1135 14 15.0395 15.0095 15.716 17.0286C16.0669 18.076 15.1046 19 14 19H5C3.89543 19 2.93311 18.076 3.28401 17.0286C3.96047 15.0095 5.88655 14 9.5 14ZM9.5 11C11.1667 11 12 10.1429 12 8C12 5.85714 11.1667 5 9.5 5C7.83333 5 7 5.85714 7 8C7 10.1429 7.83333 11 9.5 11Z" stroke="black" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
                         </svg>
                     </button>
-                    <button id="newChatBtn">
+                    <button id="optiflowz-chat-more">
                         <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-                            <path d="M6 7V18C6 19.1046 6.89543 20 8 20H16C17.1046 20 18 19.1046 18 18V7M6 7H5M6 7H8M18 7H19M18 7H16M10 11V16M14 11V16M8 7V5C8 3.89543 8.89543 3 10 3H14C15.1046 3 16 3.89543 16 5V7M8 7H16" stroke="black" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                            <path d="M6 13C6.55 13 7 12.55 7 12C7 11.45 6.55 11 6 11C5.45 11 5 11.45 5 12C5 12.55 5.45 13 6 13Z" stroke="black" stroke-width="2"/>
+                            <path d="M12 13C12.55 13 13 12.55 13 12C13 11.45 12.55 11 12 11C11.45 11 11 11.45 11 12C11 12.55 11.45 13 12 13Z" stroke="black" stroke-width="2"/>
+                            <path d="M18 13C18.55 13 19 12.55 19 12C19 11.45 18.55 11 18 11C17.45 11 17 11.45 17 12C17 12.55 17.45 13 18 13Z" stroke="black" stroke-width="2"/>
                         </svg>
-                    </button>
-                    <button onclick="openOptiFlowzRatingScreen()">
-                        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-                            <path d="M7.99997 20H17.1919C17.9865 20 18.7058 19.5296 19.0243 18.8016L21.8323 12.3833C21.9429 12.1305 22 11.8576 22 11.5816V11C22 9.89543 21.1045 9 20 9H13.5L14.7066 4.5757C14.8772 3.95023 14.5826 3.2913 14.0027 3.00136V3.00136C13.4204 2.7102 12.7134 2.87256 12.3164 3.3886L8.41472 8.46082C8.14579 8.81044 7.99997 9.23915 7.99997 9.68024V20ZM7.99997 20H2V10H7.99997V20Z" stroke="black" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
-                        </svg>
+                        <div>
+                            <p id="optiflowz-chat-new-chat">Nova konverzacija</p>
+                            <p id="optiflowz-chat-rejoin">Ponovo se pridruži</p>
+                            <p id="optiflowz-chat-rating">Oceni konverzaciju</p>
+                        </div>
                     </button>
                 </div>
             </section>
             <section class="optiflowz-chat-body">
-                <div class="optiflowz-chat-messages">              
-                    <div class="optiflowz-chat-message-agent">
-                        <img src="aiAgentImg.png" alt="Agent Avatar">
-                        <div>
-                            <p>Welcome to the chat! How can I assist you today?</p>
-                            <span>16:52</span>
-                        </div>
-                    </div>
-                    <div class="optiflowz-chat-form">
-                        <div>
-                            <p>Ispunite formular kako bismo vas povezali sa pravom osobom</p>
-                            <input type="text" placeholder="Ime i prezime" class="optiflowz-chat-form-name" required>
-                            <input type="email" placeholder="Email adresa" class="optiflowz-chat-form-email" required>
-                            <section>
-                                <button onclick="removeFormFromBody(this)">Otkaži</button>
-                                <button onclick="requestAgent()">Potrvdi</button>
-                            </section>
-                        </div>
-                    </div>
-                </div>
+                <div class="optiflowz-chat-messages"></div>
             </section>
             <section class="optiflowz-chat-input">
                 <div>
@@ -81,6 +64,20 @@
                     <div class="optiflowz-rating-actions">
                         <button onclick="closeOptiFlowzRatingScreen()">Otkaži</button>
                         <button onclick="rateTheConversation()">Potrvdi</button>
+                    </div>
+                </div>
+            </div>
+            <div class="optiflowz-chat-form">
+                <div class="closeRatingWrapper" onclick="closeOptiFlowzAgentForm()"></div>
+                <div class="optiflowz-rating-content">
+                    <div>
+                        <p>Ispunite formular kako bismo vas povezali sa pravom osobom</p>
+                        <input type="text" placeholder="Ime i prezime" class="optiflowz-chat-form-name" required>
+                        <input type="email" placeholder="Email adresa" class="optiflowz-chat-form-email" required>
+                        <section>
+                            <button onclick="closeOptiFlowzAgentForm()">Otkaži</button>
+                            <button onclick="requestAgent()">Potrvdi</button>
+                        </section>
                     </div>
                 </div>
             </div>
