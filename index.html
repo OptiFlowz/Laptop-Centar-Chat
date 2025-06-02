@@ -40,7 +40,16 @@
                 </div>
             </section>
             <section class="optiflowz-chat-body">
-                <div class="optiflowz-chat-messages"></div>
+                <div class="optiflowz-chat-messages">
+                    <!-- <div class="optiflowz-chat-message-agent optiflowz-typing-indicator">
+                        <img src="aiAgentImg.png" alt="AI Agent Avatar">
+                        <div>
+                            <span></span>
+                            <span></span>
+                            <span></span>
+                        </div>
+                    </div> -->
+                </div>
             </section>
             <section class="optiflowz-chat-input">
                 <div>
@@ -55,15 +64,15 @@
                 <div class="optiflowz-rating-content">
                     <h2>Kako ste zadovoljni ovom konverzacijom?</h2>
                     <div class="optiflowz-rating-buttons">
-                        <button data-rating="1">1</button>
-                        <button data-rating="2">2</button>
-                        <button data-rating="3">3</button>
-                        <button data-rating="4">4</button>
-                        <button data-rating="5" class="selected">5</button>
+                        <button data-rating="1" onclick="setSelected(this, this.parentElement)">1</button>
+                        <button data-rating="2" onclick="setSelected(this, this.parentElement)">2</button>
+                        <button data-rating="3" onclick="setSelected(this, this.parentElement)">3</button>
+                        <button data-rating="4" onclick="setSelected(this, this.parentElement)">4</button>
+                        <button data-rating="5" class="selected" onclick="setSelected(this, this.parentElement)">5</button>
                     </div>
                     <div class="optiflowz-rating-actions">
                         <button onclick="closeOptiFlowzRatingScreen()">Otkaži</button>
-                        <button onclick="rateTheConversation()">Potrvdi</button>
+                        <button id="optiflowz-chat-rate-button">Potrvdi</button>
                     </div>
                 </div>
             </div>
@@ -71,12 +80,25 @@
                 <div class="closeRatingWrapper" onclick="closeOptiFlowzAgentForm()"></div>
                 <div class="optiflowz-rating-content">
                     <div>
-                        <p>Ispunite formular kako bismo vas povezali sa pravom osobom</p>
+                        <p>Ispunite formular kako bismo vas povezali sa našim agentom</p>
                         <input type="text" placeholder="Ime i prezime" class="optiflowz-chat-form-name" required>
                         <input type="email" placeholder="Email adresa" class="optiflowz-chat-form-email" required>
                         <section>
                             <button onclick="closeOptiFlowzAgentForm()">Otkaži</button>
-                            <button onclick="requestAgent()">Potrvdi</button>
+                            <button id="optiflowz-chat-request-agent-button">Potrvdi</button>
+                        </section>
+                    </div>
+                </div>
+            </div>
+            <div class="optiflowz-chat-form-rejoin">
+                <div class="closeRatingWrapper" onclick="closeOptiFlowzRejoinForm()"></div>
+                <div class="optiflowz-rating-content">
+                    <div>
+                        <p>Unesite kod kako biste se vratili na staru konverzaciju</p>
+                        <input type="text" placeholder="Kod" class="optiflowz-chat-rejoin-code" required>
+                        <section>
+                            <button onclick="closeOptiFlowzRejoinForm()">Otkaži</button>
+                            <button id="optiflowz-chat-rejoin-button">Potrvdi</button>
                         </section>
                     </div>
                 </div>

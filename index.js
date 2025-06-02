@@ -14,15 +14,18 @@ socket.once("connect", async () => {
     }
     else{
         //Ucitavanje prosle konverzacije
-        loadChatHistory(localStorage.sessionID);
+        loadChatHistory(localStorage.sessionID, false);
     }
-    socket.emit('join_room',localStorage.sessionID)
+    socket.emit('join_room', {
+        sessionID: localStorage.sessionID
+    })
 });
 
 var sendBtn = document.getElementById('optiflowz-chat-send');
 var textarea = document.getElementById('optiflowz-chat-textarea');
 var chatMessages = document.querySelector('.optiflowz-chat-messages');
 var newChatBtn = document.getElementById('optiflowz-chat-new-chat');
+var rejoinBtn = document.getElementById('optiflowz-chat-rejoin-button');
 
 sendBtn.addEventListener("click",()=>{
     sendMessage();
@@ -54,7 +57,8 @@ function sendMessage(){
             socketId: socket.id,
             author: 'customer',
             content:  textToSend,
-            timeStamp: time
+            timeStamp: time,
+            bot: true
         });
     }
 }
@@ -67,7 +71,7 @@ window.closeOptiFlowzAgentForm = function() {
     document.querySelector('.optiflowz-chat-form').classList.remove('open');
 }
 
-window.requestAgent = function() {
+document.getElementById("optiflowz-chat-request-agent-button").addEventListener("click", () => {
     var nameInput = document.querySelector('.optiflowz-chat-form-name');
     var emailInput = document.querySelector('.optiflowz-chat-form-email');
     var name = nameInput.value.trim();
@@ -91,7 +95,7 @@ window.requestAgent = function() {
         name: name,
         email: email
     });
-}
+});
 
 newChatBtn.addEventListener("click",()=>{
     socket.disconnect();
@@ -100,26 +104,52 @@ newChatBtn.addEventListener("click",()=>{
         forceNew: true,
     });
     
-    localStorage.clear();
+    localStorage.sessionID = null;
 
     socket.once("connect", () => {
         window.socket = socket;
         localStorage.setItem("sessionID", socket.id);
-        socket.emit('join_room',localStorage.sessionID)
+        socket.emit('join_room', {
+            sessionID: localStorage.sessionID
+        })
+        var time = new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit', hour12: false });
         chatMessages.innerHTML = `
         <div class="optiflowz-chat-message-agent">
             <img src="aiAgentImg.png" alt="Agent Avatar">
             <div>
-                    <p>Welcome to the chat! How can I assist you today?</p>
-                    <span>16:52</span>
+                    <p>Zdravo! Kako mogu da Vam pomognem danas?</p>
+                    <span>${time}</span>
             </div>
         </div>`;
     });
+
+    document.querySelector('.optiflowz-chat-header img').src = "aiAgentImg.png";
+    document.querySelector('.optiflowz-chat-header h1').innerHTML = "AI AGENT";
 
     socket.on('receive_message', (data) => {
         receiveMessage(data)
     });
 });
+
+rejoinBtn.addEventListener("click", () => {
+    let sessionID = document.querySelector('.optiflowz-chat-rejoin-code').value.trim();
+    if(sessionID == ""){
+        document.querySelector('.optiflowz-chat-rejoin-code').classList.add("error");
+        return;
+    }
+
+    if(!loadChatHistory(sessionID, true)){
+        return;
+    }
+
+    localStorage.sessionID = null;
+    socket.emit('join_room', {
+        sessionID: sessionID
+    })
+    localStorage.setItem("sessionID", sessionID);
+
+    closeOptiFlowzRejoinForm();
+})
 
 socket.on('receive_message', (data) => {
     receiveMessage(data)
@@ -166,8 +196,17 @@ function formatMessage(text) {
     return formatted;
 }
  
-async function loadChatHistory(ssID) {
+async function loadChatHistory(ssID, rejoin) {
     let chatHistory = await load_convo(ssID);
+    console.log(chatHistory);
+    if (!chatHistory.convo[0].conversation[0].Content){
+        if(rejoin){
+            document.querySelector('.optiflowz-chat-rejoin-code').classList.add("error");
+        }
+        return;
+    }
+
+    chatMessages.innerHTML = ''; // Clear existing messages
     chatHistory.convo[0].conversation.forEach(message => {
         let messageElement = document.createElement("div");
         if (message.Sender === 's') {
@@ -190,6 +229,16 @@ async function loadChatHistory(ssID) {
             </div>`;
         chatMessages.appendChild(messageElement);
     })
+
+    if(chatHistory.convo[0].Agent && chatHistory.convo[0].Agent.Image) {
+        document.querySelector('.optiflowz-chat-header img').src = chatHistory.convo[0].Agent.Image;
+        document.querySelector('.optiflowz-chat-header h1').innerHTML = chatHistory.convo[0].Agent.Name;
+    }else{
+        document.querySelector('.optiflowz-chat-header img').src = "aiAgentImg.png";
+        document.querySelector('.optiflowz-chat-header h1').innerHTML = "AI AGENT";
+    }
+
+    scrollToBottom();
 }
 
 async function load_convo(ssID) {
@@ -284,8 +333,38 @@ window.closeOptiFlowzRatingScreen = function() {
     document.querySelector('.optiflowz-rating-wrapper').classList.remove('open');
 }
 
+// REJOIN
+
+document.getElementById("optiflowz-chat-rejoin").addEventListener("click", () => {
+    document.querySelector('.optiflowz-chat-form-rejoin').classList.add('open');
+});
+
+window.closeOptiFlowzRejoinForm = function() {
+    document.querySelector('.optiflowz-chat-form-rejoin').classList.remove('open');
+}
+
 document.getElementById("optiflowz-chat-more").addEventListener("click", () => {
     document.querySelector("#optiflowz-chat-more div").classList.toggle("open");
 })
+
+window.setSelected = function(button, parent) {
+    const buttons = parent.querySelectorAll("button");
+    buttons.forEach(btn => {
+        btn.classList.remove("selected");
+    });
+    button.classList.add("selected");
+}
+
+document.getElementById("optiflowz-chat-rate-button").addEventListener("click", () => {
+    const selectedButton = document.querySelector('.optiflowz-rating-content .optiflowz-rating-buttons button.selected');
+    if (selectedButton) {
+        const rating = selectedButton.getAttribute("data-rating");
+        socket.emit("rate", {
+            sessionID: localStorage.sessionID,
+            rating: rating
+        });
+        closeOptiFlowzRatingScreen();
+    }
+});
 
 }
