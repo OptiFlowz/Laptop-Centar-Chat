@@ -1,6 +1,6 @@
 import "https://cdn.socket.io/4.7.2/socket.io.min.js";
 
-const socketString = 'https://3e9c-2a06-63c0-a01-6800-a0ff-2e5a-f4f2-7814.ngrok-free.app/';
+const socketString = 'https://5fe1-2a06-63c0-a01-6800-e978-6bcf-a5f-2ebb.ngrok-free.app';
 var socket;
 socket = io(socketString, {
     transports: ['websocket'],
@@ -14,6 +14,7 @@ socket.once("connect", async () => {
     }
     else{       
         //Ucitavanje prosle konverzacije
+        console.log(load_convo(localStorage.sessionID));
     }
     socket.emit('join_room',localStorage.sessionID)
 });
@@ -163,6 +164,20 @@ function formatMessage(text) {
     return formatted;
 }
  
+
+async function load_convo(ssID) {
+    return new Promise((resolve, reject) => {
+      socket.emit('load_convo',{ sessionID: ssID},(convo, err) => {
+          if (err) 
+            return reject(err);
+          resolve(convo);
+        }
+      );
+    });
+}
+
+
+
 {
 const openChatButton = document.getElementById("optiflowz-chat-open");
 const textarea = document.getElementById("optiflowz-chat-textarea");
