@@ -1,6 +1,6 @@
 import "https://cdn.socket.io/4.7.2/socket.io.min.js";
 
-const socketString = 'https://5fe1-2a06-63c0-a01-6800-e978-6bcf-a5f-2ebb.ngrok-free.app';
+const socketString = 'https://122e-2a06-63c0-a01-6800-ace2-5069-30f4-5163.ngrok-free.app/';
 var socket;
 socket = io(socketString, {
     transports: ['websocket'],
@@ -98,6 +98,11 @@ document.getElementById("optiflowz-chat-request-agent-button").addEventListener(
 });
 
 newChatBtn.addEventListener("click",()=>{
+
+    socket.emit('finish', {
+        sessionID: localStorage.sessionID
+    })
+
     socket.disconnect();
     socket = io(socketString, {
         transports: ['websocket'],
@@ -155,6 +160,24 @@ socket.on('receive_message', (data) => {
     receiveMessage(data)
 });
 
+let lastStep = null;
+socket.on('step', (data) => {
+    if(data == "typing"){
+        let stepElement = document.createElement("div");
+        stepElement.classList = "optiflowz-chat-message-agent optiflowz-typing-indicator";
+        stepElement.innerHTML = `
+        <img src="aiAgentImg.png" alt="AI Agent Avatar">
+        <div>
+            <span></span>
+            <span></span>
+            <span></span>
+        </div>`;
+        chatMessages.appendChild(stepElement);
+        lastStep = stepElement;
+        scrollToBottom();
+    }
+});
+
 var chatBody=document.querySelector('.optiflowz-chat-body')
 function scrollToBottom(){
     chatBody.scrollTo(0,chatBody.scrollHeight);
@@ -174,6 +197,12 @@ function receiveMessage(data){
         scrollToBottom();
     }
     if(data.author!='customer'){
+
+        if(lastStep){
+            chatMessages.removeChild(lastStep);
+            lastStep = null;
+        }
+
         var userMsg=document.createElement("div");
         userMsg.classList.add("optiflowz-chat-message-agent");
         userMsg.innerHTML=`
@@ -252,9 +281,7 @@ async function load_convo(ssID) {
     });
 }
 
-{
 const openChatButton = document.getElementById("optiflowz-chat-open");
-const textarea = document.getElementById("optiflowz-chat-textarea");
 const chat = document.getElementById("optiflowz-chat");
 let isOptiFlowzChatOpen = false;
 let chatOpenTimeout = setTimeout(() => {}, 150);
@@ -308,6 +335,11 @@ openChatButton.addEventListener("click", () => {
     isOptiFlowzChatOpen = !isOptiFlowzChatOpen;
 })
 
+let didEmitTyping = false;
+let isTypingTimeout = setTimeout(() => {
+    socket.emit("typing", false);
+    didEmitTyping = false;
+}, 1500);
 textarea.addEventListener('keydown', (e) => {
     if(e.key.toLocaleLowerCase() == "enter" && !e.shiftKey){
         e.preventDefault();
@@ -319,10 +351,24 @@ textarea.addEventListener('keyup', () => {
     if(textToSend != ""){
         sendBtn.classList.add("clickable");
         sendBtn.disabled = false;
+        if(!didEmitTyping){
+            socket.emit("typing", true);
+            didEmitTyping = true;
+        }
+        clearTimeout(isTypingTimeout);
+        isTypingTimeout = setTimeout(() => {
+            socket.emit("typing", false);
+            didEmitTyping = false;
+        }, 1500);
     }else{
         sendBtn.classList.remove("clickable");
         sendBtn.disabled = true;
     }
+})
+textarea.addEventListener("focusout", () => {
+    clearTimeout(isTypingTimeout);
+    socket.emit("typing", false);
+    didEmitTyping = false;
 })
 
 document.getElementById("optiflowz-chat-rating").addEventListener("click", () => {
@@ -366,5 +412,3 @@ document.getElementById("optiflowz-chat-rate-button").addEventListener("click", 
         closeOptiFlowzRatingScreen();
     }
 });
-
-}
