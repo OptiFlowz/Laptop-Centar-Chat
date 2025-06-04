@@ -1,6 +1,6 @@
 import "https://cdn.socket.io/4.7.2/socket.io.min.js";
 
-const socketString = 'https://122e-2a06-63c0-a01-6800-ace2-5069-30f4-5163.ngrok-free.app/';
+const socketString = 'https://791a-2a06-63c0-a01-6800-971-4508-f031-cf38.ngrok-free.app';
 var socket;
 socket = io(socketString, {
     transports: ['websocket'],
