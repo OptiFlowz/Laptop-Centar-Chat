@@ -1,6 +1,6 @@
 import "https://cdn.socket.io/4.7.2/socket.io.min.js";
 
-const socketString = 'https://791a-2a06-63c0-a01-6800-971-4508-f031-cf38.ngrok-free.app';
+const socketString = 'https://2f66-2a06-63c0-a01-6800-18d0-f3a8-a95e-d4eb.ngrok-free.app/';
 var socket;
 socket = io(socketString, {
     transports: ['websocket'],
@@ -19,6 +19,15 @@ socket.once("connect", async () => {
     socket.emit('join_room', {
         sessionID: localStorage.sessionID
     })
+    var time = new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit', hour12: false });
+        chatMessages.innerHTML = `
+        <div class="optiflowz-chat-message-agent">
+            <img src="aiAgentImg.png" alt="Agent Avatar">
+            <div>
+                    <p>Zdravo! Kako mogu da Vam pomognem danas?</p>
+                    <span>${time}</span>
+            </div>
+    </div>`;
 });
 
 var sendBtn = document.getElementById('optiflowz-chat-send');
@@ -109,7 +118,7 @@ newChatBtn.addEventListener("click",()=>{
         forceNew: true,
     });
     
-    localStorage.sessionID = null;
+    localStorage.sessionID = undefined;
 
     socket.once("connect", () => {
         window.socket = socket;
@@ -136,29 +145,51 @@ newChatBtn.addEventListener("click",()=>{
     });
 });
 
-rejoinBtn.addEventListener("click", () => {
+rejoinBtn.addEventListener("click", async () => {
     let sessionID = document.querySelector('.optiflowz-chat-rejoin-code').value.trim();
     if(sessionID == ""){
         document.querySelector('.optiflowz-chat-rejoin-code').classList.add("error");
         return;
     }
 
-    if(!loadChatHistory(sessionID, true)){
-        return;
-    }
+    try {
+        var chatHistoryPromise = await loadChatHistory(sessionID, true);
+        if(!chatHistoryPromise){
+            return;
+        }
 
-    localStorage.sessionID = null;
-    socket.emit('join_room', {
-        sessionID: sessionID
-    })
-    localStorage.setItem("sessionID", sessionID);
+        localStorage.sessionID = undefined;
+        socket.emit('join_room', {
+            sessionID: sessionID
+        })
+        localStorage.setItem("sessionID", sessionID);
 
-    closeOptiFlowzRejoinForm();
+        closeOptiFlowzRejoinForm();
+    } catch {}
 })
 
 socket.on('receive_message', (data) => {
     receiveMessage(data)
 });
+
+socket.on('session_state', (data) => {
+    console.log(data);
+    if(data.isFinished){
+        callErrorPopup("Conversation was finished by an agent!");
+    }
+});
+
+socket.on('error', (data) => {
+    if(data.content == "Can't load finished session"){
+        closeOptiFlowzRejoinForm();
+    }
+    callErrorPopup(data.content);
+});
+
+function callErrorPopup(data){
+    document.querySelector('.optiflowz-chat-error h2').innerHTML = data;
+    document.querySelector('.optiflowz-chat-error').classList.add('open');
+}
 
 let lastStep = null;
 socket.on('step', (data) => {
@@ -226,55 +257,70 @@ function formatMessage(text) {
 }
  
 async function loadChatHistory(ssID, rejoin) {
-    let chatHistory = await load_convo(ssID);
-    console.log(chatHistory);
-    if (!chatHistory.convo[0].conversation[0].Content){
-        if(rejoin){
-            document.querySelector('.optiflowz-chat-rejoin-code').classList.add("error");
-        }
-        return;
-    }
-
-    chatMessages.innerHTML = ''; // Clear existing messages
-    chatHistory.convo[0].conversation.forEach(message => {
-        let messageElement = document.createElement("div");
-        if (message.Sender === 's') {
-            messageElement.classList.add("optiflowz-chat-message-user");
-        } else if( message.Sender === 'a') {
-            messageElement.classList.add("optiflowz-chat-message-agent");
-            messageElement.innerHTML = `<img src="${chatHistory.convo[0].Agent.Image}" alt="Agent Avatar">`;
-        }
-        else {
-            messageElement.classList.add("optiflowz-chat-message-agent");
-            messageElement.innerHTML = `<img src="aiAgentImg.png" alt="Agent Avatar">`;
+    return new Promise(async (resolve, reject) => {
+        let chatHistory = await load_convo(ssID);
+        if(!chatHistory)
+        {
+            if(rejoin){
+                document.querySelector('.optiflowz-chat-rejoin-code').classList.add("error");
+            }
+            return reject(false);
         }
 
-        let messageTime = new Date(Number(message.Time)).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit', hour12: false });
+        if(chatHistory.convo){
+            if (!chatHistory.convo[0].conversation[0].Content){
+                if(rejoin){
+                    document.querySelector('.optiflowz-chat-rejoin-code').classList.add("error");
+                }
+                return reject(false);
+            }
+        }else{ return reject(false); }
 
-        messageElement.innerHTML += `
-            <div>
-                <p>${formatMessage(message.Content)}</p>
-                <span>${messageTime}</span>
-            </div>`;
-        chatMessages.appendChild(messageElement);
-    })
+        chatMessages.innerHTML = ''; // Clear existing messages
+        chatHistory.convo[0].conversation.forEach(message => {
+            let messageElement = document.createElement("div");
+            if (message.Sender === 's') {
+                messageElement.classList.add("optiflowz-chat-message-user");
+            } else if( message.Sender === 'a') {
+                messageElement.classList.add("optiflowz-chat-message-agent");
+                messageElement.innerHTML = `<img src="${chatHistory.convo[0].Agent.Image}" alt="Agent Avatar">`;
+            }
+            else {
+                messageElement.classList.add("optiflowz-chat-message-agent");
+                messageElement.innerHTML = `<img src="aiAgentImg.png" alt="Agent Avatar">`;
+            }
 
-    if(chatHistory.convo[0].Agent && chatHistory.convo[0].Agent.Image) {
-        document.querySelector('.optiflowz-chat-header img').src = chatHistory.convo[0].Agent.Image;
-        document.querySelector('.optiflowz-chat-header h1').innerHTML = chatHistory.convo[0].Agent.Name;
-    }else{
-        document.querySelector('.optiflowz-chat-header img').src = "aiAgentImg.png";
-        document.querySelector('.optiflowz-chat-header h1').innerHTML = "AI AGENT";
-    }
+            let messageTime = new Date(Number(message.Time)).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit', hour12: false });
 
-    scrollToBottom();
+            messageElement.innerHTML += `
+                <div>
+                    <p>${formatMessage(message.Content)}</p>
+                    <span>${messageTime}</span>
+                </div>`;
+            chatMessages.appendChild(messageElement);
+        })
+
+        if(chatHistory.convo[0].Agent && chatHistory.convo[0].Agent.Image) {
+            document.querySelector('.optiflowz-chat-header img').src = chatHistory.convo[0].Agent.Image;
+            document.querySelector('.optiflowz-chat-header h1').innerHTML = chatHistory.convo[0].Agent.Name;
+        }else{
+            document.querySelector('.optiflowz-chat-header img').src = "aiAgentImg.png";
+            document.querySelector('.optiflowz-chat-header h1').innerHTML = "AI AGENT";
+        }
+
+        scrollToBottom();
+        return resolve(true);
+    });
 }
 
 async function load_convo(ssID) {
     return new Promise((resolve, reject) => {
       socket.emit('load_convo',{ sessionID: ssID},(convo, err) => {
-          if (err) 
-            return reject(err);
+          if (err){
+            localStorage.sessionID = undefined;
+            callErrorPopup(err.error);
+            return reject(err.success);
+          }
           resolve(convo);
         }
       );
@@ -392,6 +438,10 @@ window.closeOptiFlowzRejoinForm = function() {
 document.getElementById("optiflowz-chat-more").addEventListener("click", () => {
     document.querySelector("#optiflowz-chat-more div").classList.toggle("open");
 })
+
+window.closeOptiFlowzErrorPopup = function() {
+    document.querySelector('.optiflowz-chat-error').classList.remove('open');
+}
 
 window.setSelected = function(button, parent) {
     const buttons = parent.querySelectorAll("button");

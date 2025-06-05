@@ -40,16 +40,7 @@
                 </div>
             </section>
             <section class="optiflowz-chat-body">
-                <div class="optiflowz-chat-messages">
-                    <!-- <div class="optiflowz-chat-message-agent optiflowz-typing-indicator">
-                        <img src="aiAgentImg.png" alt="AI Agent Avatar">
-                        <div>
-                            <span></span>
-                            <span></span>
-                            <span></span>
-                        </div>
-                    </div> -->
-                </div>
+                <div class="optiflowz-chat-messages"></div>
             </section>
             <section class="optiflowz-chat-input">
                 <div>
@@ -99,6 +90,17 @@
                         <section>
                             <button onclick="closeOptiFlowzRejoinForm()">Otkaži</button>
                             <button id="optiflowz-chat-rejoin-button">Potrvdi</button>
+                        </section>
+                    </div>
+                </div>
+            </div>
+            <div class="optiflowz-chat-error">
+                <div class="closeRatingWrapper" onclick="closeOptiFlowzErrorPopup()"></div>
+                <div class="optiflowz-rating-content">
+                    <div>
+                        <h2>Desila se greska!</h2>
+                        <section>
+                            <button onclick="closeOptiFlowzErrorPopup()">Zatvori</button>
                         </section>
                     </div>
                 </div>
