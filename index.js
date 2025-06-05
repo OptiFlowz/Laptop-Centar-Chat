@@ -11,23 +11,39 @@ socket.once("connect", async () => {
     window.socket = socket;
     if(localStorage.sessionID == undefined){
         localStorage.setItem("sessionID", socket.id);
+
+        socket.emit('join_room', {
+            sessionID: localStorage.sessionID
+        })
+        var time = new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit', hour12: false });
+            chatMessages.innerHTML = `
+            <div class="optiflowz-chat-message-agent">
+                <img src="aiAgentImg.png" alt="Agent Avatar">
+                <div>
+                        <p>Zdravo! Kako mogu da Vam pomognem danas?</p>
+                        <span>${time}</span>
+                </div>
+        </div>`;
     }
     else{
+        socket.emit('join_room', {
+            sessionID: localStorage.sessionID
+        })
+        var time = new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit', hour12: false });
+            chatMessages.innerHTML = `
+            <div class="optiflowz-chat-message-agent">
+                <img src="aiAgentImg.png" alt="Agent Avatar">
+                <div>
+                        <p>Zdravo! Kako mogu da Vam pomognem danas?</p>
+                        <span>${time}</span>
+                </div>
+        </div>`;
+
         //Ucitavanje prosle konverzacije
-        loadChatHistory(localStorage.sessionID, false);
+        try {
+            await loadChatHistory(localStorage.sessionID, false);
+        } catch {}
     }
-    socket.emit('join_room', {
-        sessionID: localStorage.sessionID
-    })
-    var time = new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit', hour12: false });
-        chatMessages.innerHTML = `
-        <div class="optiflowz-chat-message-agent">
-            <img src="aiAgentImg.png" alt="Agent Avatar">
-            <div>
-                    <p>Zdravo! Kako mogu da Vam pomognem danas?</p>
-                    <span>${time}</span>
-            </div>
-    </div>`;
 });
 
 var sendBtn = document.getElementById('optiflowz-chat-send');
@@ -104,6 +120,9 @@ document.getElementById("optiflowz-chat-request-agent-button").addEventListener(
         name: name,
         email: email
     });
+
+    callErrorPopup("Agent će biti uskoro sa Vama!");
+    closeOptiFlowzAgentForm();
 });
 
 newChatBtn.addEventListener("click",()=>{
@@ -173,7 +192,6 @@ socket.on('receive_message', (data) => {
 });
 
 socket.on('session_state', (data) => {
-    console.log(data);
     if(data.isFinished){
         callErrorPopup("Conversation was finished by an agent!");
     }
@@ -267,6 +285,12 @@ async function loadChatHistory(ssID, rejoin) {
             return reject(false);
         }
 
+        if(chatHistory?.error == "Can't load finished session" && !rejoin){
+            newChatBtn.click();
+            document.querySelector("#optiflowz-chat-more div").classList.remove("open");
+            return reject(false);
+        }
+
         if(chatHistory.convo){
             if (!chatHistory.convo[0].conversation[0].Content){
                 if(rejoin){
@@ -283,7 +307,7 @@ async function loadChatHistory(ssID, rejoin) {
                 messageElement.classList.add("optiflowz-chat-message-user");
             } else if( message.Sender === 'a') {
                 messageElement.classList.add("optiflowz-chat-message-agent");
-                messageElement.innerHTML = `<img src="${chatHistory.convo[0].Agent.Image}" alt="Agent Avatar">`;
+                messageElement.innerHTML = `<img src="${chatHistory.convo[0].Agent.Image || `AgentDefaultIcon.png`}" alt="Agent Avatar">`;
             }
             else {
                 messageElement.classList.add("optiflowz-chat-message-agent");
@@ -300,8 +324,8 @@ async function loadChatHistory(ssID, rejoin) {
             chatMessages.appendChild(messageElement);
         })
 
-        if(chatHistory.convo[0].Agent && chatHistory.convo[0].Agent.Image) {
-            document.querySelector('.optiflowz-chat-header img').src = chatHistory.convo[0].Agent.Image;
+        if(chatHistory.convo[0].Agent) {
+            document.querySelector('.optiflowz-chat-header img').src = chatHistory.convo[0].Agent.Image || `AgentDefaultIcon.png`;
             document.querySelector('.optiflowz-chat-header h1').innerHTML = chatHistory.convo[0].Agent.Name;
         }else{
             document.querySelector('.optiflowz-chat-header img').src = "aiAgentImg.png";
