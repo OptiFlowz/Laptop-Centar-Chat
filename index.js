@@ -42,6 +42,25 @@ socket.once("connect", async () => {
         //Ucitavanje prosle konverzacije
         try {
             await loadChatHistory(localStorage.sessionID, false);
+
+            socket.emit('sync_typers', { sessionID: localStorage.sessionID}, (data, err) => {
+                setTimeout(() => {
+                    if(data.roomTypers[0] != undefined && data.roomTypers[0] != "s"){
+                        let stepElement = document.createElement("div");
+                        stepElement.classList = "optiflowz-chat-message-agent optiflowz-typing-indicator";
+                        stepElement.innerHTML = `
+                        <img src="aiAgentImg.png" alt="AI Agent Avatar">
+                        <div>
+                            <span></span>
+                            <span></span>
+                            <span></span>
+                        </div>`;
+                        chatMessages.appendChild(stepElement);
+                        lastStep = stepElement;
+                        scrollToBottom();
+                    }
+                }, 50);
+            });
         } catch {}
     }
 });
@@ -82,8 +101,7 @@ function sendMessage(){
             socketId: socket.id,
             author: 'customer',
             content:  textToSend,
-            timeStamp: time,
-            bot: true
+            timeStamp: time
         });
     }
 }
@@ -210,6 +228,23 @@ function callErrorPopup(data){
 }
 
 let lastStep = null;
+socket.on('user_typing', (data) => {
+    if(data.userID != "s"){
+        let stepElement = document.createElement("div");
+        stepElement.classList = "optiflowz-chat-message-agent optiflowz-typing-indicator";
+        stepElement.innerHTML = `
+        <img src="aiAgentImg.png" alt="AI Agent Avatar">
+        <div>
+            <span></span>
+            <span></span>
+            <span></span>
+        </div>`;
+        chatMessages.appendChild(stepElement);
+        lastStep = stepElement;
+        scrollToBottom();
+    }
+});
+
 socket.on('step', (data) => {
     if(data == "typing"){
         let stepElement = document.createElement("div");
@@ -225,7 +260,33 @@ socket.on('step', (data) => {
         lastStep = stepElement;
         scrollToBottom();
     }
+    else{
+        if(lastStep){
+            chatMessages.removeChild(lastStep);
+            lastStep = null;
+        }
+        let stepElement = document.createElement("div");
+        stepElement.classList = "optiflowz-chat-message-agent optiflowz-typing-indicator";
+        stepElement.innerHTML = `
+        <img src="aiAgentImg.png" alt="AI Agent Avatar">
+        <div>
+            <span></span>
+            <span></span>
+            <span></span>
+            <p>${data}</p>
+        </div>`;
+        chatMessages.appendChild(stepElement);
+        lastStep = stepElement;
+        scrollToBottom();
+    }
 });
+
+socket.on('user_stop_typing', (data) => {
+    if(data.userID == "a" && lastStep){
+        chatMessages.removeChild(lastStep);
+        lastStep = null;
+    }
+})
 
 var chatBody=document.querySelector('.optiflowz-chat-body')
 function scrollToBottom(){
@@ -252,13 +313,19 @@ function receiveMessage(data){
             lastStep = null;
         }
 
+        let mTime = data.timeStamp, image = "aiAgentImg.png";
+        if(data.author == "agent"){
+            mTime = new Date(Number(data.timeStamp)).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit', hour12: false });
+            image = data.image;
+        }
+
         var userMsg=document.createElement("div");
         userMsg.classList.add("optiflowz-chat-message-agent");
         userMsg.innerHTML=`
-        <img src="aiAgentImg.png" alt="Agent Avatar">
+        <img src="${image}" alt="Agent Avatar">
         <div>
             <p>${data.content}</p>
-            <span>${data.timeStamp}</span>
+            <span>${mTime}</span>
         </div>`;
         chatMessages.appendChild(userMsg);
 
@@ -307,7 +374,7 @@ async function loadChatHistory(ssID, rejoin) {
                 messageElement.classList.add("optiflowz-chat-message-user");
             } else if( message.Sender === 'a') {
                 messageElement.classList.add("optiflowz-chat-message-agent");
-                messageElement.innerHTML = `<img src="${chatHistory.convo[0].Agent.Image || `AgentDefaultIcon.png`}" alt="Agent Avatar">`;
+                messageElement.innerHTML = `<img src="${chatHistory.convo[0].Agent.Image || `DefaultIcon.png`}" alt="Agent Avatar">`;
             }
             else {
                 messageElement.classList.add("optiflowz-chat-message-agent");
@@ -325,7 +392,7 @@ async function loadChatHistory(ssID, rejoin) {
         })
 
         if(chatHistory.convo[0].Agent) {
-            document.querySelector('.optiflowz-chat-header img').src = chatHistory.convo[0].Agent.Image || `AgentDefaultIcon.png`;
+            document.querySelector('.optiflowz-chat-header img').src = chatHistory.convo[0].Agent.Image || `DefaultIcon.png`;
             document.querySelector('.optiflowz-chat-header h1').innerHTML = chatHistory.convo[0].Agent.Name;
         }else{
             document.querySelector('.optiflowz-chat-header img').src = "aiAgentImg.png";
