@@ -54,7 +54,7 @@ socket.once("connect", async () => {
                         let stepElement = document.createElement("div");
                         stepElement.classList = "optiflowz-chat-message-agent optiflowz-typing-indicator";
                         stepElement.innerHTML = `
-                        <img src="aiAgentImg.png" alt="AI Agent Avatar">
+                        <img src="${currentAgentIcon}" alt="AI Agent Avatar">
                         <div>
                             <span></span>
                             <span></span>
@@ -76,6 +76,7 @@ var chatMessages = document.querySelector('.optiflowz-chat-messages');
 var newChatBtn = document.getElementById('optiflowz-chat-new-chat');
 var rejoinBtn = document.getElementById('optiflowz-chat-rejoin-button');
 var requestBtn = document.getElementById("optiflowz-chat-request-agent");
+var currentAgentIcon = "aiAgentImg.png";
 
 sendBtn.addEventListener("click",()=>{
     sendMessage();
@@ -216,6 +217,7 @@ newChatBtn.addEventListener("click", async () => {
     requestBtn.classList.remove("chat-displayNone");
 
     document.querySelector('.optiflowz-chat-header img').src = "aiAgentImg.png";
+    currentAgentIcon = "aiAgentImg.png";
     document.querySelector('.optiflowz-chat-header h1').innerHTML = "AI AGENT";
 
     socket.on('receive_message', (data) => {
@@ -239,6 +241,7 @@ newChatBtn.addEventListener("click", async () => {
     socket.on('agent_connected', (data) => {
         waitingForAgent = false;
         document.querySelector('.optiflowz-chat-header img').src = data.PhotoURL;
+        currentAgentIcon = data.PhotoURL;
         document.querySelector('.optiflowz-chat-header h1').innerHTML = data.Name;
     });
 
@@ -258,7 +261,7 @@ newChatBtn.addEventListener("click", async () => {
             let stepElement = document.createElement("div");
             stepElement.classList = "optiflowz-chat-message-agent optiflowz-typing-indicator";
             stepElement.innerHTML = `
-            <img src="aiAgentImg.png" alt="AI Agent Avatar">
+            <img src="${currentAgentIcon}" alt="AI Agent Avatar">
             <div>
                 <span></span>
                 <span></span>
@@ -275,7 +278,7 @@ newChatBtn.addEventListener("click", async () => {
             let stepElement = document.createElement("div");
             stepElement.classList = "optiflowz-chat-message-agent optiflowz-typing-indicator";
             stepElement.innerHTML = `
-            <img src="aiAgentImg.png" alt="AI Agent Avatar">
+            <img src="${currentAgentIcon}" alt="AI Agent Avatar">
             <div>
                 <span></span>
                 <span></span>
@@ -293,7 +296,7 @@ newChatBtn.addEventListener("click", async () => {
             let stepElement = document.createElement("div");
             stepElement.classList = "optiflowz-chat-message-agent optiflowz-typing-indicator";
             stepElement.innerHTML = `
-            <img src="aiAgentImg.png" alt="AI Agent Avatar">
+            <img src="${currentAgentIcon}" alt="AI Agent Avatar">
             <div>
                 <span></span>
                 <span></span>
@@ -385,6 +388,7 @@ socket.on('session_state', (data) => {
 socket.on('agent_connected', (data) => {
     waitingForAgent = false;
     document.querySelector('.optiflowz-chat-header img').src = data.PhotoURL || "DefaultIcon.png";
+    currentAgentIcon = data.PhotoURL;
     document.querySelector('.optiflowz-chat-header h1').innerHTML = data.Name;
 });
 
@@ -411,7 +415,7 @@ socket.on('user_typing', (data) => {
         let stepElement = document.createElement("div");
         stepElement.classList = "optiflowz-chat-message-agent optiflowz-typing-indicator";
         stepElement.innerHTML = `
-        <img src="aiAgentImg.png" alt="AI Agent Avatar">
+        <img src="${currentAgentIcon}" alt="AI Agent Avatar">
         <div>
             <span></span>
             <span></span>
@@ -428,7 +432,7 @@ socket.on('step', (data) => {
         let stepElement = document.createElement("div");
         stepElement.classList = "optiflowz-chat-message-agent optiflowz-typing-indicator";
         stepElement.innerHTML = `
-        <img src="aiAgentImg.png" alt="AI Agent Avatar">
+        <img src="${currentAgentIcon}" alt="AI Agent Avatar">
         <div>
             <span></span>
             <span></span>
@@ -446,7 +450,7 @@ socket.on('step', (data) => {
         let stepElement = document.createElement("div");
         stepElement.classList = "optiflowz-chat-message-agent optiflowz-typing-indicator";
         stepElement.innerHTML = `
-        <img src="aiAgentImg.png" alt="AI Agent Avatar">
+        <img src="${currentAgentIcon}" alt="AI Agent Avatar">
         <div>
             <span></span>
             <span></span>
@@ -570,9 +574,11 @@ async function loadChatHistory(ssID, rejoin) {
         })
 
         if(chatHistory.convo[0].Agent) {
+            currentAgentIcon = chatHistory.convo[0].Agent.Image || `DefaultIcon.png`;
             document.querySelector('.optiflowz-chat-header img').src = chatHistory.convo[0].Agent.Image || `DefaultIcon.png`;
             document.querySelector('.optiflowz-chat-header h1').innerHTML = chatHistory.convo[0].Agent.Name;
         }else{
+            currentAgentIcon = "aiAgentImg.png";
             document.querySelector('.optiflowz-chat-header img').src = "aiAgentImg.png";
             document.querySelector('.optiflowz-chat-header h1').innerHTML = "AI AGENT";
         }
