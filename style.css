@@ -6,7 +6,7 @@ body{
 
 :root{
     /* MAIN SETTINGS */
-    --chat-desktop-width: 375px;
+    --chat-desktop-width: 400px;
     --chat-desktop-height: 550px;
     --chat-primary: #4680FD;
     --chat-secondary: #0034A3;
@@ -27,7 +27,7 @@ body{
     /* CHAT BODY SETTINGS */
     --chat-bodyBorderRadius: 0px 0px 0px 0px;
     --chat-chatBackground: rgb(241, 242, 245);
-    --chat-messageBoxShadow: 0px 0px 20px rgba(26, 27, 49, 0.15);
+    --chat-messageBoxShadow: 0px 0px 20px rgba(26, 27, 49, 0.1);
     --chat-messageBorder: 0px solid rgba(75, 70, 116, 0.3);
     --chat-linkColor: #0034A3;
     --chat-messageBorderRadius: 15px;
@@ -210,8 +210,11 @@ body{
     cursor: pointer;
     transition: all .15s ease-in-out;
 }
+.optiflowz-chat-header div button:nth-child(1){
+    z-index: 2;
+}
 .optiflowz-chat-header div button:nth-child(1)::after{
-    content: "Connect with Agent";
+    content: "Poveži se sa agentom";
     opacity: 0;
     position: absolute;
     top: 34px;
@@ -244,8 +247,12 @@ body{
     filter: brightness(0.8);
 }
 
-.optiflowz-chat-header div button:nth-child(1):hover svg{
+.optiflowz-chat-header div button:nth-child(1):hover svg, #optiflowz-chat-more:hover svg{
     scale: 0.95;
+}
+
+#optiflowz-chat-more:hover{
+    background-color: rgba(255, 255, 255, 0.75);
 }
 
 #optiflowz-chat-more div{
@@ -322,7 +329,7 @@ body{
     flex-direction: column;
     gap: 15px;
     padding: 15px;
-    padding-right: 12px;
+    padding-right: 10px;
 }
 
 .optiflowz-chat-messages > div{
@@ -344,6 +351,26 @@ body{
     margin: 0px;
     word-break: break-word;
     -ms-word-break: break-word;
+}
+
+.optiflowz-chat-messages .questions{
+    flex-direction: column;
+    width: 100%;
+    gap: 7px;
+}
+.optiflowz-chat-messages .questions div{
+    border: 1px solid rgba(0, 0, 0, 0.2);
+    border-radius: 10px;
+    background: var(--chat-headerGradient);
+    color: var(--chat-userMessageTextColor);
+    width: 100%;
+    max-width: 100%;
+    cursor: pointer;
+    transition: all .15s ease-in-out;
+}
+.optiflowz-chat-messages .questions div:hover{
+    filter: brightness(0.92);
+    transform: scale(1.01);
 }
 
 .optiflowz-chat-messages div div p{
@@ -396,11 +423,20 @@ body{
 }
 
 .optiflowz-typing-indicator div span{
+    flex-shrink: 0;
     width: 7px !important;
     height: 7px !important;
-    background: var(--chat-headerGradient) !important;
+    background: #3c3e4e !important;
     border-radius: 50% !important;
     animation: dotBounce 1s infinite;
+}
+
+.optiflowz-typing-indicator div p{
+    opacity: 0.7 !important;
+    color: #3c3e4e !important;
+    font-weight: 500;
+    margin-left: 10px !important;
+    pointer-events: none !important;
 }
 
 .optiflowz-typing-indicator div span:nth-child(1){
