@@ -1,9 +1,5 @@
 @import url('https://fonts.googleapis.com/css2?family=Geist:wght@100..900&display=swap');
 
-body{
-    background-color: #212027;
-}
-
 :root{
     /* MAIN SETTINGS */
     --chat-desktop-width: 400px;
