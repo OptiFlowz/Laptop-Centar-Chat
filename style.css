@@ -280,11 +280,16 @@ body{
 }
 
 #optiflowz-chat-more div p{
+    display: flex;
+    align-items: center ;
+    justify-content: flex-start;
+    gap: 10px;
     width: max-content;
     min-width: 100%;
     padding-block: 10px;
     margin: 0px;
-    padding-inline: 15px;
+    padding-right: 15px;
+    padding-left: 10px;
     color: var(--chat-headerButtonSVGFill);
     cursor: pointer;
     transition: all .1s ease-in-out;
@@ -292,6 +297,11 @@ body{
 
 #optiflowz-chat-more div p:hover{
     background: rgba(0, 0, 0, 0.1);
+}
+
+#optiflowz-chat-more div p svg{
+    width: 20px;
+    height: 20px;
 }
 
 /* CHAT BODY */
