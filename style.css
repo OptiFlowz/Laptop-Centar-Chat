@@ -327,7 +327,7 @@ body{
 }
 
 .optiflowz-chat-body::-webkit-scrollbar-thumb{
-    background: var(--chat-headerGradient);
+    background: var(--chat-userMessageBackground);
     border-radius: 10px;
 }
 
@@ -708,7 +708,7 @@ body{
 }
 
 .optiflowz-chat-input div textarea::-webkit-scrollbar-thumb{
-    background: var(--chat-headerGradient);
+    background: var(--chat-userMessageBackground);
     border-radius: 10px;
 }
 

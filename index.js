@@ -16,7 +16,7 @@ optiflowzChat.innerHTML = `
 <div class="optiflowz-chat-wrapper" style="display: none;">
     <section class="optiflowz-chat-header">
         <div>
-            <img src="aiAgentImg.png" alt="Default Agent Avatar">
+            <img src="https://cdn.jsdelivr.net/gh/OptiFlowz/Laptop-Centar-Chat/aiAgentImg.png" alt="Default Agent Avatar">
             <h1>AI AGENT</h1>
         </div>
         <div>
@@ -137,7 +137,7 @@ socket.once("connect", async () => {
         var time = new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit', hour12: false });
         chatMessages.innerHTML = `
         <div class="optiflowz-chat-message-agent">
-            <img src="aiAgentImg.png" alt="Agent Avatar">
+            <img src="https://cdn.jsdelivr.net/gh/OptiFlowz/Laptop-Centar-Chat/aiAgentImg.png" alt="Agent Avatar">
             <div>
                     <p>Zdravo! Kako mogu da Vam pomognem danas?</p>
                     <span>${time}</span>
@@ -152,7 +152,7 @@ socket.once("connect", async () => {
         var time = new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit', hour12: false });
         chatMessages.innerHTML = `
         <div class="optiflowz-chat-message-agent">
-            <img src="aiAgentImg.png" alt="Agent Avatar">
+            <img src="https://cdn.jsdelivr.net/gh/OptiFlowz/Laptop-Centar-Chat/aiAgentImg.png" alt="Agent Avatar">
             <div>
                     <p>Zdravo! Kako mogu da Vam pomognem danas?</p>
                     <span>${time}</span>
@@ -195,7 +195,7 @@ var chatMessages = document.querySelector('.optiflowz-chat-messages');
 var newChatBtn = document.getElementById('optiflowz-chat-new-chat');
 var rejoinBtn = document.getElementById('optiflowz-chat-rejoin-button');
 var requestBtn = document.getElementById("optiflowz-chat-request-agent");
-var currentAgentIcon = "aiAgentImg.png";
+var currentAgentIcon = "https://cdn.jsdelivr.net/gh/OptiFlowz/Laptop-Centar-Chat/aiAgentImg.png";
 
 sendBtn.addEventListener("click",()=>{
     sendMessage();
@@ -323,7 +323,7 @@ newChatBtn.addEventListener("click", async () => {
         var time = new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit', hour12: false });
         chatMessages.innerHTML = `
         <div class="optiflowz-chat-message-agent">
-            <img src="aiAgentImg.png" alt="Agent Avatar">
+            <img src="https://cdn.jsdelivr.net/gh/OptiFlowz/Laptop-Centar-Chat/aiAgentImg.png" alt="Agent Avatar">
             <div>
                     <p>Zdravo! Kako mogu da Vam pomognem danas?</p>
                     <span>${time}</span>
@@ -335,8 +335,8 @@ newChatBtn.addEventListener("click", async () => {
     waitingForAgent = false;
     requestBtn.classList.remove("chat-displayNone");
 
-    document.querySelector('.optiflowz-chat-header img').src = "aiAgentImg.png";
-    currentAgentIcon = "aiAgentImg.png";
+    document.querySelector('.optiflowz-chat-header img').src = "https://cdn.jsdelivr.net/gh/OptiFlowz/Laptop-Centar-Chat/aiAgentImg.png";
+    currentAgentIcon = "https://cdn.jsdelivr.net/gh/OptiFlowz/Laptop-Centar-Chat/aiAgentImg.png";
     document.querySelector('.optiflowz-chat-header h1').innerHTML = "AI AGENT";
 
     socket.on('receive_message', (data) => {
@@ -506,7 +506,7 @@ socket.on('session_state', (data) => {
 
 socket.on('agent_connected', (data) => {
     waitingForAgent = false;
-    document.querySelector('.optiflowz-chat-header img').src = data.PhotoURL || "DefaultIcon.png";
+    document.querySelector('.optiflowz-chat-header img').src = data.PhotoURL || "https://cdn.jsdelivr.net/gh/OptiFlowz/Laptop-Centar-Chat/DefaultIcon.png";
     currentAgentIcon = data.PhotoURL;
     document.querySelector('.optiflowz-chat-header h1').innerHTML = data.Name;
 });
@@ -614,7 +614,7 @@ function receiveMessage(data){
             lastStep = null;
         }
 
-        let mTime = data.timeStamp, image = "aiAgentImg.png";
+        let mTime = data.timeStamp, image = "https://cdn.jsdelivr.net/gh/OptiFlowz/Laptop-Centar-Chat/aiAgentImg.png";
         if(data.author == "agent"){
             mTime = new Date(Number(data.timeStamp)).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit', hour12: false });
             image = data.image;
@@ -675,11 +675,11 @@ async function loadChatHistory(ssID, rejoin) {
                 messageElement.classList.add("optiflowz-chat-message-user");
             } else if( message.Sender === 'a') {
                 messageElement.classList.add("optiflowz-chat-message-agent");
-                messageElement.innerHTML = `<img src="${chatHistory.convo[0].Agent.Image || `DefaultIcon.png`}" alt="Agent Avatar">`;
+                messageElement.innerHTML = `<img src="${chatHistory.convo[0].Agent.Image || `https://cdn.jsdelivr.net/gh/OptiFlowz/Laptop-Centar-Chat/DefaultIcon.png`}" alt="Agent Avatar">`;
             }
             else {
                 messageElement.classList.add("optiflowz-chat-message-agent");
-                messageElement.innerHTML = `<img src="aiAgentImg.png" alt="Agent Avatar">`;
+                messageElement.innerHTML = `<img src="https://cdn.jsdelivr.net/gh/OptiFlowz/Laptop-Centar-Chat/aiAgentImg.png" alt="Agent Avatar">`;
             }
 
             let messageTime = new Date(Number(message.Time)).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit', hour12: false });
@@ -693,12 +693,12 @@ async function loadChatHistory(ssID, rejoin) {
         })
 
         if(chatHistory.convo[0].Agent) {
-            currentAgentIcon = chatHistory.convo[0].Agent.Image || `DefaultIcon.png`;
-            document.querySelector('.optiflowz-chat-header img').src = chatHistory.convo[0].Agent.Image || `DefaultIcon.png`;
+            currentAgentIcon = chatHistory.convo[0].Agent.Image || `https://cdn.jsdelivr.net/gh/OptiFlowz/Laptop-Centar-Chat/DefaultIcon.png`;
+            document.querySelector('.optiflowz-chat-header img').src = chatHistory.convo[0].Agent.Image || `https://cdn.jsdelivr.net/gh/OptiFlowz/Laptop-Centar-Chat/DefaultIcon.png`;
             document.querySelector('.optiflowz-chat-header h1').innerHTML = chatHistory.convo[0].Agent.Name;
         }else{
-            currentAgentIcon = "aiAgentImg.png";
-            document.querySelector('.optiflowz-chat-header img').src = "aiAgentImg.png";
+            currentAgentIcon = "https://cdn.jsdelivr.net/gh/OptiFlowz/Laptop-Centar-Chat/aiAgentImg.png";
+            document.querySelector('.optiflowz-chat-header img').src = "https://cdn.jsdelivr.net/gh/OptiFlowz/Laptop-Centar-Chat/aiAgentImg.png";
             document.querySelector('.optiflowz-chat-header h1').innerHTML = "AI AGENT";
         }
 
