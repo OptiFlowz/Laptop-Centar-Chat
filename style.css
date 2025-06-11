@@ -760,3 +760,64 @@
     85%{ transform: scaleY(1.2) translateX(1px); }
     100%{ transform: scaleY(1) translateX(0px); }
 }
+
+/* LOADER */
+
+.optiflowz-chat-loader{
+    position: absolute;
+    top: -5px;
+    bottom: -5px;
+    left: -5px;
+    right: -5px;
+    display: grid;
+    place-items: center;
+    transition: all .2s ease-in-out;
+    background-color: var(--chat-chatBackground);
+    -webkit-backdrop-filter: blur(2px);
+    backdrop-filter: blur(2px);
+    z-index: 6;
+}
+
+.optiflowz-chat-loader.off{
+    opacity: 0;
+    pointer-events: none;
+}
+
+.optiflowz-chat-loader svg {
+    box-sizing: border-box;
+    width: 3rem;
+    height: 3rem;
+    padding: 2px;
+    transition: all .15s ease-in-out;
+    transform-origin: right center;
+    overflow: visible;
+}
+
+.optiflowz-chat-loader svg circle {
+    stroke: var(--chat-primary);
+    fill: none;
+    stroke-width: 2px;
+    stroke-linecap: round;
+    transform-origin: 50% 50%;
+    transition: all 0.2s ease-in-out 0s;
+    animation: 2s linear 0s infinite normal none running loading-spinner;
+}
+
+@keyframes loading-spinner {
+    0% {
+        stroke-dasharray: 0.01px, 43.97px;
+        transform: rotate(0);
+    }
+
+    50% {
+        stroke-dasharray: 21.99px, 21.99px;
+        transform: rotate(450deg);
+        stroke-width: 2.5px;
+        stroke-dashoffset: 5px;
+    }
+
+    100% {
+        stroke-dasharray: 0.01px, 43.97px;
+        transform: rotate(1080deg);
+    }
+}

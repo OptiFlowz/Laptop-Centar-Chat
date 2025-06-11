@@ -1,6 +1,6 @@
 import "https://cdn.socket.io/4.7.2/socket.io.min.js";
 
-const socketString = 'https://9860-2a06-63c0-a01-6800-45b8-e917-8238-1056.ngrok-free.app/';
+const socketString = 'https://c78e-2a06-63c0-a01-6800-c77-356d-6245-bdec.ngrok-free.app/';
 var socket;
 socket = io(socketString, {
     transports: ['websocket'],
@@ -120,6 +120,11 @@ optiflowzChat.innerHTML = `
             </div>
         </div>
     </div>
+    <div class="optiflowz-chat-loader">
+        <svg viewBox="0 0 16 16" height="48" width="48" class="loading-spinner">
+            <circle r="7px" cy="8px" cx="8px"></circle>
+        </svg>
+    </div>
 </div>
 `;
 document.body.appendChild(optiflowzChat);
@@ -144,6 +149,7 @@ socket.once("connect", async () => {
             </div>
         </div>`;
         addQuestionsToChat();
+        removeChatLoader();
     }
     else{
         socket.emit('join_room', {
@@ -166,6 +172,8 @@ socket.once("connect", async () => {
         //Ucitavanje prosle konverzacije
         try {
             await loadChatHistory(localStorage.sessionID, false);
+
+            removeChatLoader();
 
             socket.emit('sync_typers', { sessionID: localStorage.sessionID}, (data, err) => {
                 setTimeout(() => {
@@ -857,3 +865,11 @@ document.getElementById("optiflowz-chat-rate-button").addEventListener("click", 
         callErrorPopup("Vaša ocena je poslata!");
     }
 });
+
+function removeChatLoader(){
+    document.querySelector(".optiflowz-chat-loader").classList.add("off");
+}
+
+function addChatLoader(){
+    document.querySelector(".optiflowz-chat-loader").classList.remove("off");
+}
