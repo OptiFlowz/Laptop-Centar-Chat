@@ -128,7 +128,7 @@ optiflowzChat.innerHTML = `
 </div>
 `;
 document.body.appendChild(optiflowzChat);
-document.body.innerHTML += `<link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/OptiFlowz/Laptop-Centar-Chat@0.0.5/style.css">`;
+document.body.innerHTML += `<link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/OptiFlowz/Laptop-Centar-Chat@0.0.6/style.css">`;
 
 // Uspostavljanje konekcije sa soket serverom
 socket.once("connect", async () => {
@@ -186,6 +186,26 @@ socket.once("connect", async () => {
                             <span></span>
                             <span></span>
                             <span></span>
+                        </div>`;
+                        chatMessages.appendChild(stepElement);
+                        lastStep = stepElement;
+                        scrollToBottom();
+                    }
+                }, 50);
+            });
+
+            socket.emit('sync_botStep', { sessionID: localStorage.sessionID}, (data, err) => {
+                setTimeout(() => {
+                    if(data.botStep != undefined && data.botStep != null){
+                        let stepElement = document.createElement("div");
+                        stepElement.classList = "optiflowz-chat-message-agent optiflowz-typing-indicator";
+                        stepElement.innerHTML = `
+                        <img src="${currentAgentIcon}" alt="AI Agent Avatar">
+                        <div>
+                            <span></span>
+                            <span></span>
+                            <span></span>
+                            <p>${data.botStep}</p>
                         </div>`;
                         chatMessages.appendChild(stepElement);
                         lastStep = stepElement;
