@@ -128,7 +128,7 @@ optiflowzChat.innerHTML = `
 </div>
 `;
 document.body.appendChild(optiflowzChat);
-document.body.innerHTML += `<link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/OptiFlowz/Laptop-Centar-Chat@0.0.7/style.css">`;
+document.body.innerHTML += `<link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/OptiFlowz/Laptop-Centar-Chat@0.0.8/style.css">`;
 
 // Uspostavljanje konekcije sa soket serverom
 socket.once("connect", async () => {
@@ -229,8 +229,9 @@ sendBtn.addEventListener("click",()=>{
     sendMessage();
 });
 
-let isWaitingForBot = false;
+let isWaitingForBot = false, isBotChat = true;
 function sendMessage(){
+    console.log(isBotChat);
     if(isWaitingForBot){
         return;
     }
@@ -264,7 +265,11 @@ function sendMessage(){
             timeStamp: time
         });
 
-        isWaitingForBot = true;
+        if(!isBotChat){
+            isWaitingForBot = false;
+        }else{
+            isWaitingForBot = true;
+        }
     }
 }
 
@@ -368,6 +373,7 @@ newChatBtn.addEventListener("click", async () => {
     });
 
     waitingForAgent = false;
+    isBotChat = true;
     requestBtn.classList.remove("chat-displayNone");
 
     document.querySelector('.optiflowz-chat-header img').src = "https://cdn.jsdelivr.net/gh/OptiFlowz/Laptop-Centar-Chat/aiAgentImg.png";
@@ -379,6 +385,9 @@ newChatBtn.addEventListener("click", async () => {
     });
 
     socket.on('session_state', (data) => {
+        if(!data.isBotChat){
+            isBotChat = false;
+        }
         if(data.isFinished){
             callErrorPopup("Conversation was finished by an agent!");
         }
@@ -527,6 +536,9 @@ socket.on('receive_message', (data) => {
 });
 
 socket.on('session_state', (data) => {
+    if(!data.isBotChat){
+        isBotChat = false;
+    }
     if(data.isFinished){
         callErrorPopup("Conversation was finished by an agent!");
     }
@@ -647,6 +659,10 @@ function receiveMessage(data){
     if(data.author!='customer'){
 
         isWaitingForBot = false;
+        if(textarea.value.trim() != ""){
+            sendBtn.classList.add("clickable");
+            sendBtn.disabled = false;
+        }
 
         if(lastStep){
             chatMessages.removeChild(lastStep);

@@ -244,7 +244,7 @@
     filter: brightness(0.8);
 }
 
-.optiflowz-chat-header div button:nth-child(1):hover svg, #optiflowz-chat-more:hover svg{
+.optiflowz-chat-header div button:nth-child(1):hover svg, #optiflowz-chat-more:hover > svg{
     scale: 0.95;
 }
 
