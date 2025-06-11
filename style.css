@@ -64,6 +64,7 @@
     font-optical-sizing: auto !important;
     font-style: normal !important;
     box-sizing: border-box !important;
+    -webkit-tap-highlight-color: transparent !important;
 }
 
 #optiflowz-chat img{
