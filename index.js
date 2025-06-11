@@ -128,7 +128,7 @@ optiflowzChat.innerHTML = `
 </div>
 `;
 document.body.appendChild(optiflowzChat);
-document.body.innerHTML += `<link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/OptiFlowz/Laptop-Centar-Chat@0.0.4/style.css">`;
+document.body.innerHTML += `<link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/OptiFlowz/Laptop-Centar-Chat@0.0.5/style.css">`;
 
 // Uspostavljanje konekcije sa soket serverom
 socket.once("connect", async () => {
@@ -209,7 +209,12 @@ sendBtn.addEventListener("click",()=>{
     sendMessage();
 });
 
+let isWaitingForBot = false;
 function sendMessage(){
+    if(isWaitingForBot){
+        return;
+    }
+
     var textToSend=textarea.value.trim()
     if(textToSend!="")
     {
@@ -238,6 +243,8 @@ function sendMessage(){
             content:  textToSend,
             timeStamp: time
         });
+
+        isWaitingForBot = true;
     }
 }
 
@@ -367,6 +374,7 @@ newChatBtn.addEventListener("click", async () => {
 
     socket.on('agent_connected', (data) => {
         waitingForAgent = false;
+        isWaitingForBot = false;
         document.querySelector('.optiflowz-chat-header img').src = data.PhotoURL;
         currentAgentIcon = data.PhotoURL;
         document.querySelector('.optiflowz-chat-header h1').innerHTML = data.Name;
@@ -514,6 +522,7 @@ socket.on('session_state', (data) => {
 
 socket.on('agent_connected', (data) => {
     waitingForAgent = false;
+    isWaitingForBot = false;
     document.querySelector('.optiflowz-chat-header img').src = data.PhotoURL || "https://cdn.jsdelivr.net/gh/OptiFlowz/Laptop-Centar-Chat/DefaultIcon.png";
     currentAgentIcon = data.PhotoURL;
     document.querySelector('.optiflowz-chat-header h1').innerHTML = data.Name;
@@ -617,6 +626,8 @@ function receiveMessage(data){
     }
     if(data.author!='customer'){
 
+        isWaitingForBot = false;
+
         if(lastStep){
             chatMessages.removeChild(lastStep);
             lastStep = null;
@@ -624,6 +635,7 @@ function receiveMessage(data){
 
         let mTime = data.timeStamp, image = "https://cdn.jsdelivr.net/gh/OptiFlowz/Laptop-Centar-Chat/aiAgentImg.png";
         if(data.author == "agent"){
+            isWaitingForBot = false;
             mTime = new Date(Number(data.timeStamp)).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit', hour12: false });
             image = data.image;
         }
@@ -796,7 +808,8 @@ textarea.addEventListener('keydown', (e) => {
 })
 textarea.addEventListener('keyup', () => {
     const textToSend = textarea.value.trim();
-    if(textToSend != ""){
+
+    if(textToSend != "" && !isWaitingForBot){
         sendBtn.classList.add("clickable");
         sendBtn.disabled = false;
         if(!didEmitTyping){
