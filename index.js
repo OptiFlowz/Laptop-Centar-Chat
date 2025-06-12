@@ -1,6 +1,6 @@
 import "https://cdn.socket.io/4.7.2/socket.io.min.js";
 
-const socketString = 'https://e336-2a06-63c0-a01-6800-c5d7-4a5f-8a8d-25d4.ngrok-free.app/';
+const socketString = 'https://laptopcentar-chat-server.fly.dev/';
 var socket;
 socket = io(socketString, {
     transports: ['websocket'],
@@ -128,7 +128,7 @@ optiflowzChat.innerHTML = `
 </div>
 `;
 document.body.appendChild(optiflowzChat);
-document.body.innerHTML += `<link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/OptiFlowz/Laptop-Centar-Chat@0.1.1/style.css">`;
+document.body.innerHTML += `<link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/OptiFlowz/Laptop-Centar-Chat@0.1.2/style.css">`;
 
 // Uspostavljanje konekcije sa soket serverom
 socket.once("connect", async () => {
@@ -231,7 +231,6 @@ sendBtn.addEventListener("click",()=>{
 
 let isWaitingForBot = false, isBotChat = true;
 function sendMessage(){
-    console.log(isBotChat);
     if(isWaitingForBot){
         return;
     }
@@ -374,6 +373,7 @@ newChatBtn.addEventListener("click", async () => {
 
     waitingForAgent = false;
     isBotChat = true;
+    isWaitingForBot = false;
     requestBtn.classList.remove("chat-displayNone");
 
     document.querySelector('.optiflowz-chat-header img').src = "https://cdn.jsdelivr.net/gh/OptiFlowz/Laptop-Centar-Chat/aiAgentImg.png";
