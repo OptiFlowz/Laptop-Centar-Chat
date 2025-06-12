@@ -1,6 +1,6 @@
 import "https://cdn.socket.io/4.7.2/socket.io.min.js";
 
-const socketString = 'https://c78e-2a06-63c0-a01-6800-c77-356d-6245-bdec.ngrok-free.app/';
+const socketString = 'https://e336-2a06-63c0-a01-6800-c5d7-4a5f-8a8d-25d4.ngrok-free.app/';
 var socket;
 socket = io(socketString, {
     transports: ['websocket'],
@@ -128,7 +128,7 @@ optiflowzChat.innerHTML = `
 </div>
 `;
 document.body.appendChild(optiflowzChat);
-document.body.innerHTML += `<link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/OptiFlowz/Laptop-Centar-Chat@0.0.9/style.css">`;
+document.body.innerHTML += `<link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/OptiFlowz/Laptop-Centar-Chat@0.1.0/style.css">`;
 
 // Uspostavljanje konekcije sa soket serverom
 socket.once("connect", async () => {
@@ -179,7 +179,7 @@ socket.once("connect", async () => {
                 setTimeout(() => {
                     if(data.roomTypers[0] != undefined && data.roomTypers[0] != "s"){
                         let stepElement = document.createElement("div");
-                        stepElement.classList = "optiflowz-chat-message-agent optiflowz-typing-indicator";
+                        stepElement.classList = "optiflowz-chat-message-agent optiflowz-typing-indicator small";
                         stepElement.innerHTML = `
                         <img src="${currentAgentIcon}" alt="AI Agent Avatar">
                         <div>
@@ -423,7 +423,7 @@ newChatBtn.addEventListener("click", async () => {
     socket.on('user_typing', (data) => {
         if(data.userID != "s"){
             let stepElement = document.createElement("div");
-            stepElement.classList = "optiflowz-chat-message-agent optiflowz-typing-indicator";
+            stepElement.classList = "optiflowz-chat-message-agent optiflowz-typing-indicator small";
             stepElement.innerHTML = `
             <img src="${currentAgentIcon}" alt="AI Agent Avatar">
             <div>
@@ -440,7 +440,7 @@ newChatBtn.addEventListener("click", async () => {
     socket.on('step', (data) => {
         if(data == "typing"){
             let stepElement = document.createElement("div");
-            stepElement.classList = "optiflowz-chat-message-agent optiflowz-typing-indicator";
+            stepElement.classList = "optiflowz-chat-message-agent optiflowz-typing-indicator small";
             stepElement.innerHTML = `
             <img src="${currentAgentIcon}" alt="AI Agent Avatar">
             <div>
@@ -581,7 +581,7 @@ let lastStep = null;
 socket.on('user_typing', (data) => {
     if(data.userID != "s"){
         let stepElement = document.createElement("div");
-        stepElement.classList = "optiflowz-chat-message-agent optiflowz-typing-indicator";
+        stepElement.classList = "optiflowz-chat-message-agent optiflowz-typing-indicator small";
         stepElement.innerHTML = `
         <img src="${currentAgentIcon}" alt="AI Agent Avatar">
         <div>
@@ -598,7 +598,7 @@ socket.on('user_typing', (data) => {
 socket.on('step', (data) => {
     if(data == "typing"){
         let stepElement = document.createElement("div");
-        stepElement.classList = "optiflowz-chat-message-agent optiflowz-typing-indicator";
+        stepElement.classList = "optiflowz-chat-message-agent optiflowz-typing-indicator small";
         stepElement.innerHTML = `
         <img src="${currentAgentIcon}" alt="AI Agent Avatar">
         <div>

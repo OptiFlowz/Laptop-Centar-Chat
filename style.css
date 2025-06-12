@@ -2,7 +2,7 @@
 
 :root{
     /* MAIN SETTINGS */
-    --chat-desktop-width: 400px;
+    --chat-desktop-width: 375px;
     --chat-desktop-height: 550px;
     --chat-primary: #4680FD;
     --chat-secondary: #0034A3;
@@ -23,6 +23,8 @@
     /* CHAT BODY SETTINGS */
     --chat-bodyBorderRadius: 20px 20px 0px 0px;
     --chat-chatBackground: rgb(241, 242, 245);
+    --chat-messageFontSize: 1.05rem;
+    --chat-messageLineHeight: 1.35rem;
     --chat-messageBoxShadow: 0px 0px 20px rgba(26, 27, 49, 0.1);
     --chat-messageBorder: 0px solid rgba(75, 70, 116, 0.3);
     --chat-linkColor: #0034A3;
@@ -320,7 +322,7 @@
 
 .optiflowz-chat-body::-webkit-scrollbar-track{
     background-color: transparent;
-    margin-top: 3px;
+    margin-top: 25px;
 }
 
 .optiflowz-chat-body::-webkit-scrollbar-thumb{
@@ -382,8 +384,8 @@
 
 .optiflowz-chat-messages div div p{
     margin: 0;
-    font-size: 1rem;
-    line-height: 1.2rem;
+    font-size: var(--chat-messageFontSize);
+    line-height: var(--chat-messageLineHeight);
 }
 
 .optiflowz-chat-messages div div span{
@@ -457,9 +459,14 @@
 }
 
 .optiflowz-typing-indicator div{
+    border-radius: 30px !important;
     display: flex;
     align-items: center;
     gap: 7px;
+}
+
+.optiflowz-typing-indicator.small div{
+    height: 35px !important;
 }
 
 @keyframes dotBounce {
