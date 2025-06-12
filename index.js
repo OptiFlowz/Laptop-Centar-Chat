@@ -128,7 +128,7 @@ optiflowzChat.innerHTML = `
 </div>
 `;
 document.body.appendChild(optiflowzChat);
-document.body.innerHTML += `<link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/OptiFlowz/Laptop-Centar-Chat@0.1.0/style.css">`;
+document.body.innerHTML += `<link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/OptiFlowz/Laptop-Centar-Chat@0.1.1/style.css">`;
 
 // Uspostavljanje konekcije sa soket serverom
 socket.once("connect", async () => {
@@ -886,9 +886,23 @@ window.closeOptiFlowzRejoinForm = function() {
     document.querySelector('.optiflowz-chat-form-rejoin').classList.remove('open');
 }
 
+var moreMenu =  document.querySelector("#optiflowz-chat-more div");
 document.getElementById("optiflowz-chat-more").addEventListener("click", () => {
-    document.querySelector("#optiflowz-chat-more div").classList.toggle("open");
+    moreMenu.classList.toggle("open");
+    if(moreMenu.classList.contains("open")){
+        setTimeout(() => {
+            chat.addEventListener("click", closeOptiflowzMoreMenu);
+        }, 50);
+    }else{
+        moreMenu.classList.remove("open");
+        chat.removeEventListener("click", closeOptiflowzMoreMenu);
+    }
 })
+
+function closeOptiflowzMoreMenu(){
+    moreMenu.classList.remove("open");
+    chat.removeEventListener("click", closeOptiflowzMoreMenu);
+}
 
 window.closeOptiFlowzErrorPopup = function() {
     document.querySelector('.optiflowz-chat-error').classList.remove('open');
