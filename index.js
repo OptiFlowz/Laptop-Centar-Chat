@@ -128,7 +128,7 @@ optiflowzChat.innerHTML = `
 </div>
 `;
 document.body.appendChild(optiflowzChat);
-document.body.innerHTML += `<link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/OptiFlowz/Laptop-Centar-Chat@0.1.2/style.css">`;
+document.body.innerHTML += `<link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/OptiFlowz/Laptop-Centar-Chat@0.1.3/style.css">`;
 
 // Uspostavljanje konekcije sa soket serverom
 socket.once("connect", async () => {
@@ -681,7 +681,7 @@ function receiveMessage(data){
         userMsg.innerHTML=`
         <img src="${image}" alt="Agent Avatar">
         <div>
-            <p>${data.content}</p>
+            <p>${formatMessage(data.content)}</p>
             <span>${mTime}</span>
         </div>`;
         chatMessages.appendChild(userMsg);
