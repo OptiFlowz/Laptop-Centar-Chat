@@ -58,6 +58,7 @@ optiflowzChat.innerHTML = `
         <div class="optiflowz-chat-messages"></div>
     </section>
     <section class="optiflowz-chat-input">
+        <span>AI odgovori nisu uvek tačni!</span>
         <div>
             <textarea name="chat-input" id="optiflowz-chat-textarea" placeholder="Unesite poruku..."></textarea>
             <button id="optiflowz-chat-send">
@@ -128,7 +129,7 @@ optiflowzChat.innerHTML = `
 </div>
 `;
 document.body.appendChild(optiflowzChat);
-document.body.innerHTML += `<link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/OptiFlowz/Laptop-Centar-Chat@0.1.3/style.css">`;
+document.body.innerHTML += `<link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/OptiFlowz/Laptop-Centar-Chat@0.1.4/style.css">`;
 
 // Uspostavljanje konekcije sa soket serverom
 socket.once("connect", async () => {
@@ -784,6 +785,9 @@ let chatOpenTimeout = setTimeout(() => {}, 150);
 
 if(localStorage.leftChatOpen == 1){
     isOptiFlowzChatOpen=true;
+    aiPopupMessageTimeout = setTimeout(() => {
+        document.querySelector('.optiflowz-chat-input span').classList.add("off");
+    }, 5000);
     chat.children[1].style.display = "flex";
         chatOpenTimeout = setTimeout(() => {
             chat.classList.add("chat-open");
@@ -812,6 +816,7 @@ openChatButton.addEventListener("touchcancel", () => {
     openChatButton.classList.remove("buttonDown");
 })
 
+var aiPopupMessageTimeout = setTimeout(() => {}, 5000);
 openChatButton.addEventListener("click", () => {
     clearTimeout(chatOpenTimeout);
     if(isOptiFlowzChatOpen){
@@ -820,7 +825,11 @@ openChatButton.addEventListener("click", () => {
         chatOpenTimeout = setTimeout(() => {
             chat.children[1].style.display = "none";
         }, 150);
+        clearTimeout(aiPopupMessageTimeout);
     }else{
+        aiPopupMessageTimeout = setTimeout(() => {
+            document.querySelector('.optiflowz-chat-input span').classList.add("off");
+        }, 5000);
         localStorage.leftChatOpen = 1;
         chat.children[1].style.display = "flex";
         chatOpenTimeout = setTimeout(() => {

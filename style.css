@@ -2,7 +2,7 @@
 
 :root{
     /* MAIN SETTINGS */
-    --chat-desktop-width: 375px;
+    --chat-desktop-width: 410px;
     --chat-desktop-height: 550px;
     --chat-primary: #4680FD;
     --chat-secondary: #0034A3;
@@ -666,6 +666,7 @@
 /* CHAT INPUT */
 
 .optiflowz-chat-input{
+    position: relative;
     background: var(--chat-chatBackground);
     min-height: 65px;
     width: 100%;
@@ -767,6 +768,27 @@
     50%{ transform: scaleY(0.6) translateX(-1px); }
     85%{ transform: scaleY(1.2) translateX(1px); }
     100%{ transform: scaleY(1) translateX(0px); }
+}
+
+.optiflowz-chat-input span{
+    position: absolute;
+    top: -20px;
+    height: 40px;
+    text-align: center;
+    width: calc(100% - 20px);
+    border-radius: var(--chat-inputBorderRadius);
+    background-color: rgba(0, 0, 0, 0.15);
+    font-size: 0.75rem;
+    padding-top: 3px;
+    color: rgba(0, 0, 0, 0.7);
+    pointer-events: none;
+    z-index: -1;
+    transition: all .15s ease-in-out;
+}
+
+.optiflowz-chat-input span.off{
+    opacity: 0;
+    transform: translateY(100%);
 }
 
 /* LOADER */
