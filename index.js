@@ -792,9 +792,6 @@ let chatOpenTimeout = setTimeout(() => {}, 150);
 
 if(localStorage.leftChatOpen == 1){
     isOptiFlowzChatOpen=true;
-    aiPopupMessageTimeout = setTimeout(() => {
-        document.querySelector('.optiflowz-chat-input span').classList.add("off");
-    }, 5000);
     chat.children[1].style.display = "flex";
         chatOpenTimeout = setTimeout(() => {
             chat.classList.add("chat-open");
@@ -823,7 +820,6 @@ openChatButton.addEventListener("touchcancel", () => {
     openChatButton.classList.remove("buttonDown");
 })
 
-var aiPopupMessageTimeout = setTimeout(() => {}, 5000);
 openChatButton.addEventListener("click", () => {
     clearTimeout(chatOpenTimeout);
     if(isOptiFlowzChatOpen){
@@ -832,11 +828,7 @@ openChatButton.addEventListener("click", () => {
         chatOpenTimeout = setTimeout(() => {
             chat.children[1].style.display = "none";
         }, 150);
-        clearTimeout(aiPopupMessageTimeout);
     }else{
-        aiPopupMessageTimeout = setTimeout(() => {
-            document.querySelector('.optiflowz-chat-input span').classList.add("off");
-        }, 5000);
         localStorage.leftChatOpen = 1;
         chat.children[1].style.display = "flex";
         chatOpenTimeout = setTimeout(() => {
