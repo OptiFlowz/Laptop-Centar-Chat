@@ -58,7 +58,6 @@ optiflowzChat.innerHTML = `
         <div class="optiflowz-chat-messages"></div>
     </section>
     <section class="optiflowz-chat-input">
-        <span>AI odgovori nisu uvek tačni!</span>
         <div>
             <textarea name="chat-input" id="optiflowz-chat-textarea" placeholder="Unesite poruku..."></textarea>
             <button id="optiflowz-chat-send">
@@ -87,7 +86,7 @@ optiflowzChat.innerHTML = `
         <div class="closeRatingWrapper" onclick="closeOptiFlowzAgentForm()"></div>
         <div class="optiflowz-rating-content">
             <div>
-                <p>Ispunite formular kako bismo vas povezali sa našim agentom</p>
+                <p>Ispunite formular kako bismo Vas povezali sa agentom</p>
                 <input type="text" placeholder="Ime i prezime" class="optiflowz-chat-form-name" required>
                 <input type="email" placeholder="Email adresa" class="optiflowz-chat-form-email" required>
                 <section>
@@ -129,7 +128,7 @@ optiflowzChat.innerHTML = `
 </div>
 `;
 document.body.appendChild(optiflowzChat);
-document.body.innerHTML += `<link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/OptiFlowz/Laptop-Centar-Chat@0.1.4/style.css">`;
+document.body.innerHTML += `<link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/OptiFlowz/Laptop-Centar-Chat@0.1.5/style.css">`;
 
 // Uspostavljanje konekcije sa soket serverom
 socket.once("connect", async () => {
@@ -402,6 +401,10 @@ newChatBtn.addEventListener("click", async () => {
         }
     });
 
+    socket.on('open_agent_form', () => {
+        document.querySelector('.optiflowz-chat-form').classList.add('open');
+    });
+
     socket.on('agent_connected', (data) => {
         waitingForAgent = false;
         isWaitingForBot = false;
@@ -551,6 +554,10 @@ socket.on('session_state', (data) => {
         requestBtn.classList.remove("chat-displayNone");
         waitingForAgent = false;
     }
+});
+
+socket.on('open_agent_form', () => {
+    document.querySelector('.optiflowz-chat-form').classList.add('open');
 });
 
 socket.on('agent_connected', (data) => {

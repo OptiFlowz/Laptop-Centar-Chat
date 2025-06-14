@@ -770,27 +770,6 @@
     100%{ transform: scaleY(1) translateX(0px); }
 }
 
-.optiflowz-chat-input span{
-    position: absolute;
-    top: -20px;
-    height: 40px;
-    text-align: center;
-    width: calc(100% - 20px);
-    border-radius: var(--chat-inputBorderRadius);
-    background-color: rgba(0, 0, 0, 0.15);
-    font-size: 0.75rem;
-    padding-top: 3px;
-    color: rgba(0, 0, 0, 0.7);
-    pointer-events: none;
-    z-index: -1;
-    transition: all .15s ease-in-out;
-}
-
-.optiflowz-chat-input span.off{
-    opacity: 0;
-    transform: translateY(100%);
-}
-
 /* LOADER */
 
 .optiflowz-chat-loader{
