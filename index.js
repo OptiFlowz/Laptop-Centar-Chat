@@ -1,7 +1,7 @@
 import "https://cdn.socket.io/4.7.2/socket.io.min.js";
 import 'https://cdn.jsdelivr.net/npm/dompurify@latest/dist/purify.min.js';
 
-const socketString = 'https://laptopcentar-chat-server.fly.dev/';
+const socketString = 'https://b586-2a06-63c0-a01-6800-98e3-67ce-ae6b-5e63.ngrok-free.app/';
 var socket;
 socket = io(socketString, {
     transports: ['websocket'],
@@ -128,8 +128,10 @@ optiflowzChat.innerHTML = `
     </div>
 </div>
 `;
-document.body.appendChild(optiflowzChat);
-document.body.innerHTML += `<link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/OptiFlowz/Laptop-Centar-Chat@0.1.7/style.css">`;
+document.body.innerHTML += `<link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/OptiFlowz/Laptop-Centar-Chat@0.1.8/style.css">`;
+setTimeout(() => {
+    document.body.appendChild(optiflowzChat);
+}, 50);
 
 // Uspostavljanje konekcije sa soket serverom
 socket.once("connect", async () => {
@@ -603,6 +605,10 @@ socket.on('error', (data) => {
 function callErrorPopup(data){
     document.querySelector('.optiflowz-chat-error h2').innerHTML = data;
     document.querySelector('.optiflowz-chat-error').classList.add('open');
+    if(data == "Šaljete poruke previše brzo, molimo Vas sačekajte par sekundi."){
+        chatMessages.removeChild(chatMessages.children[chatMessages.children.length-1]);
+    }
+    textarea.blur();
 }
 
 let lastStep = null;
