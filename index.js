@@ -1,4 +1,5 @@
 import "https://cdn.socket.io/4.7.2/socket.io.min.js";
+import 'https://cdn.jsdelivr.net/npm/dompurify@latest/dist/purify.min.js';
 
 const socketString = 'https://laptopcentar-chat-server.fly.dev/';
 var socket;
@@ -128,7 +129,7 @@ optiflowzChat.innerHTML = `
 </div>
 `;
 document.body.appendChild(optiflowzChat);
-document.body.innerHTML += `<link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/OptiFlowz/Laptop-Centar-Chat@0.1.5/style.css">`;
+document.body.innerHTML += `<link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/OptiFlowz/Laptop-Centar-Chat@0.1.7/style.css">`;
 
 // Uspostavljanje konekcije sa soket serverom
 socket.once("connect", async () => {
@@ -197,19 +198,34 @@ socket.once("connect", async () => {
             socket.emit('sync_botStep', { sessionID: localStorage.sessionID}, (data, err) => {
                 setTimeout(() => {
                     if(data.botStep != undefined && data.botStep != null){
-                        let stepElement = document.createElement("div");
-                        stepElement.classList = "optiflowz-chat-message-agent optiflowz-typing-indicator";
-                        stepElement.innerHTML = `
-                        <img src="${currentAgentIcon}" alt="AI Agent Avatar">
-                        <div>
-                            <span></span>
-                            <span></span>
-                            <span></span>
-                            <p>${data.botStep}</p>
-                        </div>`;
-                        chatMessages.appendChild(stepElement);
-                        lastStep = stepElement;
-                        scrollToBottom();
+                        if(data.botStep != "typing"){
+                            let stepElement = document.createElement("div");
+                            stepElement.classList = "optiflowz-chat-message-agent optiflowz-typing-indicator";
+                            stepElement.innerHTML = `
+                            <img src="${currentAgentIcon}" alt="AI Agent Avatar">
+                            <div>
+                                <span></span>
+                                <span></span>
+                                <span></span>
+                                <p>${data.botStep}</p>
+                            </div>`;
+                            chatMessages.appendChild(stepElement);
+                            lastStep = stepElement;
+                            scrollToBottom();
+                        }else{
+                            let stepElement = document.createElement("div");
+                            stepElement.classList = "optiflowz-chat-message-agent optiflowz-typing-indicator small";
+                            stepElement.innerHTML = `
+                            <img src="${currentAgentIcon}" alt="AI Agent Avatar">
+                            <div>
+                                <span></span>
+                                <span></span>
+                                <span></span>
+                            </div>`;
+                            chatMessages.appendChild(stepElement);
+                            lastStep = stepElement;
+                            scrollToBottom();
+                        }
                     }
                 }, 50);
             });
@@ -234,8 +250,12 @@ function sendMessage(){
     if(isWaitingForBot){
         return;
     }
-
-    var textToSend=textarea.value.trim()
+    var textToSend=textarea.value.trim();
+    if(textToSend.includes("<") || textToSend.includes(">")){
+        callErrorPopup("Korišćeni nedozvoljeni karakteri!");
+        return;
+    }
+    textToSend = DOMPurify.sanitize(textToSend, {ALLOWED_TAGS: []});
     if(textToSend!="")
     {
         removeQuestionsFromChat();
