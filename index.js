@@ -128,10 +128,9 @@ optiflowzChat.innerHTML = `
     </div>
 </div>
 `;
-document.body.innerHTML += `<link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/OptiFlowz/Laptop-Centar-Chat@0.1.9/style.css">`;
-setTimeout(() => {
-    document.body.appendChild(optiflowzChat);
-}, 50);
+
+document.body.appendChild(optiflowzChat);
+document.body.innerHTML += `<link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/OptiFlowz/Laptop-Centar-Chat@0.1.9.1/style.css">`;
 
 // Uspostavljanje konekcije sa soket serverom
 socket.once("connect", async () => {
