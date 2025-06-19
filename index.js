@@ -129,8 +129,8 @@ optiflowzChat.innerHTML = `
 </div>
 `;
 
-document.body.appendChild(optiflowzChat);
-document.body.innerHTML += `<link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/OptiFlowz/Laptop-Centar-Chat@0.1.9.1/style.css">`;
+// document.body.appendChild(optiflowzChat);
+// document.body.innerHTML += `<link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/OptiFlowz/Laptop-Centar-Chat@0.2.0/style.css">`;
 
 // Uspostavljanje konekcije sa soket serverom
 socket.once("connect", async () => {
@@ -304,8 +304,8 @@ window.closeOptiFlowzAgentForm = function() {
 document.getElementById("optiflowz-chat-request-agent-button").addEventListener("click", () => {
     var nameInput = document.querySelector('.optiflowz-chat-form-name');
     var emailInput = document.querySelector('.optiflowz-chat-form-email');
-    var name = nameInput.value.trim();
-    var email = emailInput.value.trim();
+    var name = DOMPurify.sanitize(nameInput.value.trim(), {ALLOWED_TAGS: []});
+    var email = DOMPurify.sanitize(emailInput.value.trim(), {ALLOWED_TAGS: []});
     if(name == ""){
         nameInput.classList.add("error");
         return;
