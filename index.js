@@ -51,6 +51,12 @@ optiflowzChat.innerHTML = `
                         </svg>
                         Oceni konverzaciju
                     </p>
+                    <a href="https://optiflowz.com/chat-privacy-policy">
+                        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                            <path d="M15 10L11 14L9 12M4 5V12.0557C4 15.0859 5.71202 17.856 8.42229 19.2111L12 21L15.5777 19.2111C18.288 17.856 20 15.0859 20 12.0557V5L19.303 5.07744C16.8542 5.34953 14.3912 4.70802 12.3863 3.27594L12 3L11.6137 3.27594C9.60878 4.70802 7.14576 5.34953 4.69699 5.07744L4 5Z" stroke="black" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                        </svg>
+                        Politika privatnosti
+                    </a>
                 </div>
             </button>
         </div>
@@ -110,6 +116,18 @@ optiflowzChat.innerHTML = `
             </div>
         </div>
     </div>
+    <div class="optiflowz-chat-consent">
+        <div class="closeRatingWrapper" onclick="closeOptiFlowzConsentScreen()"></div>
+        <div class="optiflowz-rating-content">
+            <div>
+                <p>Korišćenjem ovog četa pristajete na obradu vaših podataka u skladu sa našom <a href='#'>Politikom privatnosti</a>.</p>
+                <section>
+                    <button onclick="closeOptiFlowzConsentScreen()">Otkaži</button>
+                    <button id="optiflowz-chat-consent-button">Potrvdi</button>
+                </section>
+            </div>
+        </div>
+    </div>
     <div class="optiflowz-chat-error">
         <div class="closeRatingWrapper" onclick="closeOptiFlowzErrorPopup()"></div>
         <div class="optiflowz-rating-content">
@@ -130,7 +148,7 @@ optiflowzChat.innerHTML = `
 `;
 
 document.body.appendChild(optiflowzChat);
-document.body.innerHTML += `<link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/OptiFlowz/Laptop-Centar-Chat@0.2.1/style.css">`;
+document.body.innerHTML += `<link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/OptiFlowz/Laptop-Centar-Chat@0.2.2/style.css">`;
 
 // Uspostavljanje konekcije sa soket serverom
 socket.once("connect", async () => {
@@ -817,6 +835,7 @@ let chatOpenTimeout = setTimeout(() => {}, 150);
 
 if(localStorage.leftChatOpen == 1){
     isOptiFlowzChatOpen=true;
+    showConsentScreen();
     chat.children[1].style.display = "flex";
         chatOpenTimeout = setTimeout(() => {
             chat.classList.add("chat-open");
@@ -854,6 +873,7 @@ openChatButton.addEventListener("click", () => {
             chat.children[1].style.display = "none";
         }, 150);
     }else{
+        showConsentScreen();
         localStorage.leftChatOpen = 1;
         chat.children[1].style.display = "flex";
         chatOpenTimeout = setTimeout(() => {
@@ -969,3 +989,24 @@ function removeChatLoader(){
 function addChatLoader(){
     document.querySelector(".optiflowz-chat-loader").classList.remove("off");
 }
+
+function showConsentScreen(){
+    if(localStorage.optiflowzConsent == 1)
+        return;
+    document.querySelector('.optiflowz-chat-consent').classList.add('open');
+}
+
+window.closeOptiFlowzConsentScreen = function(){
+    localStorage.optiflowzConsent = 0;
+    chat.classList.remove("chat-open");
+    localStorage.leftChatOpen = 0;
+    chatOpenTimeout = setTimeout(() => {
+        chat.children[1].style.display = "none";
+    }, 150);
+    isOptiFlowzChatOpen = false;
+}
+
+document.getElementById("optiflowz-chat-consent-button").addEventListener("click", () => {
+    localStorage.optiflowzConsent = 1;
+    document.querySelector('.optiflowz-chat-consent').classList.remove('open');
+});
