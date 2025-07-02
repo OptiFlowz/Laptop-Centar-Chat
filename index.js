@@ -120,7 +120,7 @@ optiflowzChat.innerHTML = `
         <div class="closeRatingWrapper" onclick="closeOptiFlowzConsentScreen()"></div>
         <div class="optiflowz-rating-content">
             <div>
-                <p>Korišćenjem ovog četa pristajete na obradu vaših podataka u skladu sa našom <a href='#'>Politikom privatnosti</a>.</p>
+                <p>Korišćenjem ovog četa pristajete na obradu vaših podataka u skladu sa našom <a href='https://optiflowz.com/chat-privacy-policy'>Politikom privatnosti</a>.</p>
                 <section>
                     <button onclick="closeOptiFlowzConsentScreen()">Otkaži</button>
                     <button id="optiflowz-chat-consent-button">Potrvdi</button>
@@ -148,7 +148,7 @@ optiflowzChat.innerHTML = `
 `;
 
 document.body.appendChild(optiflowzChat);
-document.body.innerHTML += `<link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/OptiFlowz/Laptop-Centar-Chat@0.2.2/style.css">`;
+document.body.innerHTML += `<link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/OptiFlowz/Laptop-Centar-Chat@0.2.3/style.css">`;
 
 // Uspostavljanje konekcije sa soket serverom
 socket.once("connect", async () => {
