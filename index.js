@@ -51,7 +51,7 @@ optiflowzChat.innerHTML = `
                         </svg>
                         Oceni konverzaciju
                     </p>
-                    <a href="https://optiflowz.com/chat-privacy-policy">
+                    <a target="_blank" href="https://optiflowz.com/chat-privacy-policy">
                         <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
                             <path d="M15 10L11 14L9 12M4 5V12.0557C4 15.0859 5.71202 17.856 8.42229 19.2111L12 21L15.5777 19.2111C18.288 17.856 20 15.0859 20 12.0557V5L19.303 5.07744C16.8542 5.34953 14.3912 4.70802 12.3863 3.27594L12 3L11.6137 3.27594C9.60878 4.70802 7.14576 5.34953 4.69699 5.07744L4 5Z" stroke="black" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
                         </svg>
@@ -93,7 +93,7 @@ optiflowzChat.innerHTML = `
         <div class="closeRatingWrapper" onclick="closeOptiFlowzAgentForm()"></div>
         <div class="optiflowz-rating-content">
             <div>
-                <p>Ispunite formular kako bismo Vas povezali sa agentom</p>
+                <p>Ispunite formular kako bismo Vas povezali sa podrškom</p>
                 <input type="text" placeholder="Ime i prezime" class="optiflowz-chat-form-name" required>
                 <input type="email" placeholder="Email adresa" class="optiflowz-chat-form-email" required>
                 <section>
@@ -148,7 +148,7 @@ optiflowzChat.innerHTML = `
 `;
 
 document.body.appendChild(optiflowzChat);
-document.body.innerHTML += `<link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/OptiFlowz/Laptop-Centar-Chat@0.2.3/style.css">`;
+document.body.innerHTML += `<link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/OptiFlowz/Laptop-Centar-Chat@0.2.4/style.css">`;
 
 // Uspostavljanje konekcije sa soket serverom
 socket.once("connect", async () => {
@@ -532,9 +532,9 @@ function addQuestionsToChat(){
     for (let i = 0; i < 2; i++) {
         let newQuestion = document.createElement("div");
         if(i == 0){
-            newQuestion.innerHTML = "Za koliko mi stiže porudžbina?";
+            newQuestion.innerHTML = "Da li vršite servis i popravku laptopova i računara?";
         }else{
-            newQuestion.innerHTML = "Da li imate ____ na stanju?";
+            newQuestion.innerHTML = "Koje su opcije plaćanja dostupne?";
         }
         newQuestion.addEventListener("click", () => {
             textarea.value = newQuestion.innerHTML;
