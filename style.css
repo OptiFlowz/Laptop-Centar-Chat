@@ -186,6 +186,7 @@
     height: 32px;
     border-radius: 50%;
     background-color: white;
+    object-fit: cover;
     border: 1px solid rgba(75, 70, 116, 0.3);
 }
 
